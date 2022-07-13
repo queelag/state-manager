@@ -5,6 +5,7 @@
     "@microsoft/api-extractor": "^7.24.0",
     "@queelag/core": "^1.0.83",
     "@rollup/plugin-typescript": "^8.3.2",
+    "@types/cookie": "^0.5.1",
     "@types/jest": "^27.5.1",
     "dayjs": "^1.11.3",
     "jest": "^28.1.0",
