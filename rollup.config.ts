@@ -2,7 +2,7 @@ import typescript from '@rollup/plugin-typescript'
 import { terser } from 'rollup-plugin-terser'
 
 export default {
-  external: ['@queelag/core', 'isomorphic-dompurify', 'mobx', 'mobx-react-lite', 'react', 'react-dom', 'react-window', 'superstruct'],
+  external: ['@queelag/core'],
   input: 'src/index.ts',
   output: [
     {
