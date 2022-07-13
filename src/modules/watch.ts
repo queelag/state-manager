@@ -13,14 +13,93 @@ import {
 import { ModuleLogger } from '../loggers/module.logger'
 import { Administration } from './administration'
 
+/**
+ * Registers an AUTORUN watcher on target.
+ *
+ * ```ts
+ * import { observe, watch, WatcherType } from '@queelag/state-manager'
+ *
+ * const store = observe({ number: 0 })
+ *
+ * watch(
+ *   WatcherType.AUTORUN,
+ *   () => console.log(store.number),
+ *   store
+ * )
+ *
+ * store.number++
+ * ```
+ *
+ * @category Module
+ */
 export function watch<T extends object, U>(type: WatcherType.AUTORUN, effect: WatcherAutorunEffect, target: T): WatcherDisposer
+/**
+ * Registers a DISPATCH watcher on target.
+ *
+ * ```ts
+ * import { observe, watch, WatcherType } from '@queelag/state-manager'
+ *
+ * const store = observe({ number: 0 })
+ *
+ * watch(
+ *   WatcherType.DISPATCH,
+ *   // function that triggers a re-render
+ *   () => undefined,
+ *   store
+ * )
+ *
+ * store.number++
+ * ```
+ *
+ * @category Module
+ */
 export function watch<T extends object, U>(type: WatcherType.DISPATCH, effect: WatcherDispatchEffect, target: T): WatcherDisposer
+/**
+ * Registers a REACTION watcher on target.
+ *
+ * ```ts
+ * import { observe, watch, WatcherType } from '@queelag/state-manager'
+ *
+ * const store = observe({ number: 0 })
+ *
+ * watch(
+ *   WatcherType.REACTION,
+ *   () => store.number,
+ *   () => console.log(store.number),
+ *   store
+ * )
+ *
+ * store.number++
+ * ```
+ *
+ * @category Module
+ */
 export function watch<T extends object, U>(
   type: WatcherType.REACTION,
   expression: WatcherReactionExpression<U>,
   effect: WatcherReactionEffect<U>,
   target: T
 ): WatcherDisposer
+/**
+ * Registers a WHEN watcher on target.
+ *
+ * ```ts
+ * import { observe, watch, WatcherType } from '@queelag/state-manager'
+ *
+ * const store = observe({ boolean: false })
+ *
+ * watch(
+ *   WatcherType.WHEN,
+ *   () => console.log(store.boolean),
+ *   store
+ * )
+ *
+ * store.boolean = true
+ * store.boolean = false
+ * ```
+ *
+ * @category Module
+ */
 export function watch<T extends object, U>(type: WatcherType.WHEN, predicate: WatcherWhenPredicate, effect: WatcherWhenEffect, target: T): WatcherDisposer
 export function watch<T extends object, U>(type: WatcherType, ...args: any): WatcherDisposer {
   let target: T

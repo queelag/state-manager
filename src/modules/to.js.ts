@@ -2,6 +2,18 @@ import { ModuleLogger } from '../loggers/module.logger'
 import { Administration } from './administration'
 import { Observable } from './observable'
 
+/**
+ * Converts the target to a plain object.
+ *
+ * ```ts
+ * import { observe, toJS } from '@queelag/state-manager'
+ *
+ * const store = observe({ number: 0 })
+ * console.log(toJS(store))
+ * ```
+ *
+ * @category Module
+ */
 export function toJS<T extends object>(target: T): T {
   let clone: T
 

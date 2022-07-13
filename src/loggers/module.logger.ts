@@ -1,4 +1,4 @@
-import { Logger, LoggerLevel } from '@queelag/core'
+import { Logger } from '@queelag/core'
 import { LoggerName } from '../definitions/enums'
 
-export const ModuleLogger = new Logger(LoggerName.MODULE, LoggerLevel.VERBOSE)
+export const ModuleLogger = new Logger(LoggerName.MODULE)
