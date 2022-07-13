@@ -1,6 +1,5 @@
 {
   "author": "Dario Sechi",
-  "dependencies": {},
   "devDependencies": {
     "@microsoft/api-extractor": "^7.24.0",
     "@queelag/core": "^1.0.83",
