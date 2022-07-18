@@ -218,7 +218,7 @@ describe('Observable', () => {
     expect(Administration.get(store)).toBe(administration)
 
     store = new Store()
-    store.object.a = { b: {} }
+    store.object.a = { b: {}, m: new Map(), s: new Set() }
     Observable.make(store, ['object'])
 
     store.object.b = store.object.a

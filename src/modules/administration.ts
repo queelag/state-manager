@@ -10,11 +10,11 @@ export class Administration<T extends object, K extends keyof T = keyof T> {
   root: object
   watchers: Watcher[]
 
-  constructor(keys: K[], proxy: T, parent?: object, root?: object) {
+  constructor(keys: K[], proxy: T, parent: object = {}, root: object = {}) {
     this.keys = keys
-    this.parent = parent || {}
+    this.parent = parent
     this.proxy = proxy
-    this.root = root || {}
+    this.root = root
     this.watchers = []
   }
 
@@ -66,6 +66,18 @@ export class Administration<T extends object, K extends keyof T = keyof T> {
     })
   }
 
+  static update<T extends object>(target: T, parent: object = {}, root: object = {}): T {
+    let administration: Administration<T> | undefined
+
+    administration = Administration.get(target)
+    if (!administration) return target
+
+    administration.parent = parent
+    administration.root = root
+
+    return target
+  }
+
   static delete<T extends object>(target: T): boolean {
     return Reflect.deleteProperty(target, ADMINISTRATION_SYMBOL)
   }
@@ -79,7 +91,7 @@ export class Administration<T extends object, K extends keyof T = keyof T> {
   }
 
   static isNotDefined<T extends object>(target: T): boolean {
-    return !this.isDefined(target)
+    return this.isDefined(target) === false
   }
 
   static with<T extends object>(target: T, fn: (administration: Administration<T>) => any, fallback: any = undefined) {

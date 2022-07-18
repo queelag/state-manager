@@ -29,28 +29,24 @@ export class ObservableObject {
         break
     }
 
-    if (ObservableObject.isPropertyProxy(property)) {
-      property = { ...property }
-      Administration.delete(property)
-    }
-
     switch (true) {
       case property instanceof Map:
-        ObservableMap.make(root, target, property)
-        break
+        return ObservableMap.make(root, target, key, property, receiver)
       case property instanceof Set:
-        ObservableSet.make(root, target, property)
-        break
+        return ObservableSet.make(root, target, key, property, receiver)
       default:
         let proxy: U
+
+        if (ObservableObject.isPropertyProxy(property)) {
+          property = { ...property }
+          Administration.delete(property)
+        }
 
         proxy = new Proxy(property, handler)
         Administration.define(property, Object.keys(property), proxy, target, root)
 
         return Reflect.set(target, key, proxy, receiver)
     }
-
-    return true
   }
 
   static makeProperties<T extends object, U extends object, K extends keyof U = keyof U>(root: T, handler: ProxyHandler<U>, target: U, keys: K[]): boolean {
@@ -66,7 +62,7 @@ export class ObservableObject {
       .every(Boolean)
   }
 
-  static isPropertyProxiable(property: any): boolean {
+  static isPropertyProxiable(property: object): boolean {
     if (!property?.toString) {
       return false
     }
@@ -88,15 +84,15 @@ export class ObservableObject {
     }
   }
 
-  static isPropertyNotProxiable(property: any): boolean {
+  static isPropertyNotProxiable(property: object): boolean {
     return this.isPropertyProxiable(property) === false
   }
 
-  static isPropertyProxy(property: any): boolean {
-    return typeof property === 'object' && Reflect.get(property, IS_PROXY_KEY) === true
+  static isPropertyProxy(property: object): boolean {
+    return Reflect.get(property, IS_PROXY_KEY) === true
   }
 
-  static isPropertyNotProxy(property: any): boolean {
+  static isPropertyNotProxy(property: object): boolean {
     return ObservableObject.isPropertyProxy(property) === false
   }
 }

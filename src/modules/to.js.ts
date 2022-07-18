@@ -1,6 +1,8 @@
 import { ModuleLogger } from '../loggers/module.logger'
 import { Administration } from './administration'
+import { ObservableMap } from './observable.map'
 import { ObservableObject } from './observable.object'
+import { ObservableSet } from './observable.set'
 
 /**
  * Converts the target to a plain object.
@@ -34,7 +36,7 @@ export function toJS<T extends object>(target: T): T {
       case property instanceof Map:
         let map: Map<any, any>
 
-        map = new Map(property.entries())
+        map = ObservableMap.toJS(property)
         Reflect.set(clone, k, map)
 
         ModuleLogger.verbose('toJS', `The map has been cloned`, property, map)
@@ -43,7 +45,7 @@ export function toJS<T extends object>(target: T): T {
       case property instanceof Set:
         let set: Set<any>
 
-        set = new Set(property.entries())
+        set = ObservableSet.toJS(property)
         Reflect.set(clone, k, set)
 
         ModuleLogger.verbose('toJS', `The set has been cloned`, property, set)
