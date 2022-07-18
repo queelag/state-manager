@@ -6,7 +6,7 @@ import { IS_PROXY_KEY } from '../definitions/constants'
  * ```ts
  * import { isObservable, observe } from '@queelag/state-manager'
  *
- * const store = observe({ observed: {}, unobserved: {} }, ['observer'])
+ * const store = observe({ observed: {}, unobserved: {} }, ['observed'])
  *
  * // will be true
  * console.log(isObservable(store.observed))

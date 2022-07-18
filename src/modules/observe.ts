@@ -9,7 +9,7 @@ import { Observable } from './observable'
  * ```ts
  * import { observe } from '@queelag/state-manager'
  *
- * const store = observe({ number: 0 })
+ * const store = observe({ number: 0 }, ['number'])
  * ```
  *
  * @category Module
