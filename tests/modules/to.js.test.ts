@@ -1,5 +1,4 @@
-import { toJS } from '../../src'
-import { Observable } from '../../src/modules/observable'
+import { isObservable, toJS } from '../../src'
 import { getTestStore, Store } from '../get.test.store'
 
 describe('toJS', () => {
@@ -9,11 +8,11 @@ describe('toJS', () => {
     store = getTestStore()
     js = toJS(store)
 
-    expect(Observable.isPropertyProxy(js.object)).toBeFalsy()
-    expect(Observable.isPropertyProxy(js.array)).toBeFalsy()
-    expect(Observable.isPropertyProxy(js.date)).toBeFalsy()
-    expect(Observable.isPropertyProxy(js.map)).toBeFalsy()
-    expect(Observable.isPropertyProxy(js.set)).toBeFalsy()
-    expect(Observable.isPropertyProxy(js.dayjs)).toBeFalsy()
+    expect(isObservable(js.object)).toBeFalsy()
+    expect(isObservable(js.array)).toBeFalsy()
+    expect(isObservable(js.date)).toBeFalsy()
+    expect(isObservable(js.map)).toBeFalsy()
+    expect(isObservable(js.set)).toBeFalsy()
+    expect(isObservable(js.dayjs)).toBeFalsy()
   })
 })

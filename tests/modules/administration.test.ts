@@ -94,4 +94,8 @@ describe('Administration', () => {
     expect(re).toBeCalledTimes(1)
     expect(we).toBeCalledTimes(1)
   })
+
+  it('does not set if already exists', () => {
+    expect(() => Administration.set(store, [], new Proxy(store, {}))).not.toThrow()
+  })
 })

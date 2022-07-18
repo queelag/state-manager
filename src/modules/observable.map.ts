@@ -14,7 +14,7 @@ export class ObservableMap {
 
     map.clear = () => {
       _clear()
-      Administration.get(root)?.onChange()
+      Administration.get(map)?.onChange()
     }
     map.delete = (key: K) => {
       let deleted: boolean
@@ -22,7 +22,7 @@ export class ObservableMap {
       deleted = _delete(key)
       if (!deleted) return false
 
-      Administration.get(root)?.onChange()
+      Administration.get(map)?.onChange()
 
       return true
     }
@@ -30,10 +30,12 @@ export class ObservableMap {
       let map: Map<K, V>
 
       map = _set(key, value)
-      Administration.get(root)?.onChange()
+      Administration.get(map)?.onChange()
 
       return map
     }
+
+    Administration.set(map, [], new Proxy({}, {}))
 
     return map
   }

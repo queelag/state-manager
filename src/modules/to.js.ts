@@ -1,6 +1,6 @@
 import { ModuleLogger } from '../loggers/module.logger'
 import { Administration } from './administration'
-import { Observable } from './observable'
+import { ObservableObject } from './observable.object'
 
 /**
  * Converts the target to a plain object.
@@ -26,7 +26,7 @@ export function toJS<T extends object>(target: T): T {
     property = Reflect.get(clone, k)
     if (typeof property !== 'object' || property === null) return
 
-    if (Observable.isObjectPropertyNotProxiable(property)) {
+    if (ObservableObject.isPropertyNotProxiable(property)) {
       return
     }
 

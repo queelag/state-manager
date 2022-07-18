@@ -16,13 +16,13 @@ export class ObservableSet {
       let set: Set<U>
 
       set = _add(value)
-      Administration.get(root)?.onChange()
+      Administration.get(set)?.onChange()
 
       return set
     }
     set.clear = () => {
       _clear()
-      Administration.get(root)?.onChange()
+      Administration.get(set)?.onChange()
     }
     set.delete = (value: U) => {
       let deleted: boolean
@@ -30,10 +30,12 @@ export class ObservableSet {
       deleted = _delete(value)
       if (!deleted) return false
 
-      Administration.get(root)?.onChange()
+      Administration.get(set)?.onChange()
 
       return true
     }
+
+    Administration.set(set, [], new Proxy({}, {}))
 
     return set
   }

@@ -47,8 +47,18 @@ export class Administration<T extends object, K extends keyof T = keyof T> {
     })
   }
 
-  static set<T extends object, K extends keyof T>(target: T, keys: K[], proxy: T): boolean {
-    return Reflect.set(target, ADMINISTRATION_SYMBOL, new Administration(keys, proxy))
+  static set<T extends object, K extends keyof T>(target: T, keys: K[], proxy: T): T {
+    if (Reflect.has(target, ADMINISTRATION_SYMBOL)) {
+      ModuleLogger.warn('Administration', 'set', `The target already has an Administration defined.`, target, keys, proxy)
+      return target
+    }
+
+    return Object.defineProperty(target, ADMINISTRATION_SYMBOL, {
+      configurable: false,
+      enumerable: false,
+      value: new Administration(keys, proxy),
+      writable: false
+    })
   }
 
   static delete<T extends object>(target: T): boolean {

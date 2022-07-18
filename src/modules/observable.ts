@@ -1,55 +1,39 @@
+import { IS_PROXY_KEY } from '../definitions/constants'
 import { ModuleLogger } from '../loggers/module.logger'
 import { Administration } from './administration'
-import { ObservableMap } from './observable.map'
-import { ObservableSet } from './observable.set'
+import { ObservableObject } from './observable.object'
 
 export class Observable {
-  static makeProperty<T extends object, U extends object, K extends keyof U>(root: T, target: U, key: K, property: any, receiver: any): boolean {
-    if (typeof property !== 'object') {
-      return true
+  static make<T extends object, K extends keyof T>(target: T, keys: K[]): T {
+    let clone: T, proxy: T
+
+    if (Administration.isDefined(target)) {
+      ModuleLogger.warn('observe', `The target is already an observable.`, target)
+      return target
     }
 
-    if (property === null) {
-      return Reflect.set(target, key, property, receiver)
-    }
+    clone = { ...target }
+    ModuleLogger.verbose('observe', `The target has been cloned.`, clone)
 
-    if (Observable.isObjectPropertyNotProxiable(property)) {
-      return Reflect.set(target, key, property, receiver)
-    }
+    keys.forEach((k: keyof T) => {
+      Object.defineProperty(target, k, Observable.getPropertyDescriptor(target, k))
+      ModuleLogger.verbose('observe', `The property "${String(k)}" is now bound to the proxy.`, [target[k]])
+    })
 
-    switch (true) {
-      case property instanceof Map:
-      case property instanceof Set:
-        break
-      default:
-        Observable.makeProperties(root, property, Object.keys(property))
-        break
-    }
+    ObservableObject.makeProperties<T>(Observable.getProxyHandler(target), clone, keys)
 
-    if (Observable.isPropertyProxy(property)) {
-      return Reflect.set(target, key, property, receiver)
-    }
+    proxy = new Proxy(clone, Observable.getProxyHandler(target))
+    ModuleLogger.verbose('observe', `The clone has been proxied.`, proxy)
 
-    switch (true) {
-      case property instanceof Map:
-        ObservableMap.make(root, property)
-        break
-      case property instanceof Set:
-        ObservableSet.make(root, property)
-        break
-      default:
-        return Reflect.set(target, key, new Proxy(property, Observable.getProxyHandler(root)), receiver)
-    }
+    Administration.set(target, keys, proxy)
+    ModuleLogger.verbose('observe', `The administration class has been set.`, Administration.get(target))
 
-    return true
-  }
-
-  static makeProperties<T extends object, U extends object, K extends keyof U>(root: T, target: U, keys: K[]): boolean {
-    return keys.map((k: K) => Observable.makeProperty(root, target, k, Reflect.get(target, k), target)).every(Boolean)
+    return target
   }
 
   static getPropertyDescriptor<T extends object>(target: T, key: keyof T): PropertyDescriptor {
     return {
+      configurable: false,
       get: () => Administration.with(target, (administration: Administration<T>) => Reflect.get(administration.proxy, key)),
       set: (value: any) =>
         Administration.with(target, (administration: Administration<T>) => {
@@ -60,17 +44,39 @@ export class Observable {
 
   static getProxyHandler<T extends object, U extends object>(root: T): ProxyHandler<U> {
     return {
-      get: (target: U, p: string | symbol, receiver: any) => {
-        if (p === 'isProxy') {
+      defineProperty: (target: U, p: PropertyKey, attributes: PropertyDescriptor) => {
+        if (p === IS_PROXY_KEY) {
+          return false
+        }
+
+        return Reflect.defineProperty(target, p, attributes)
+      },
+      deleteProperty: (target: U, p: PropertyKey) => {
+        let deleted: boolean
+
+        if (p === IS_PROXY_KEY) {
+          return false
+        }
+
+        deleted = Reflect.deleteProperty(target, p)
+        if (!deleted) return false
+
+        Administration.get(target)?.onChange()
+        ModuleLogger.verbose('Observable', 'getProxyHandler', 'deleteProperty', `The property has been deleted.`, [target, p])
+
+        return true
+      },
+      get: (target: U, p: PropertyKey, receiver: any) => {
+        if (p === IS_PROXY_KEY) {
           return true
         }
 
         return Reflect.get(target, p, receiver)
       },
-      set: (target: U, p: string, value: any, receiver: any) => {
-        let set: boolean
+      set: (target: U, p: PropertyKey, value: any, receiver: any) => {
+        let set: boolean, administration: Administration<U> | Administration<T> | undefined
 
-        if (p === 'isProxy') {
+        if (p === IS_PROXY_KEY) {
           return false
         }
 
@@ -80,7 +86,7 @@ export class Observable {
 
         switch (typeof value) {
           case 'object':
-            set = Observable.makeProperty(root, target, p as keyof U, value, receiver)
+            set = ObservableObject.make<U>(Observable.getProxyHandler(root), target, p as keyof U, value, receiver)
             if (!set) return false
 
             break
@@ -91,41 +97,13 @@ export class Observable {
             break
         }
 
+        administration = Administration.get(target) || Administration.get(root)
+        administration?.onChange()
+
         ModuleLogger.verbose('ProxyObservable', 'getHandler', 'set', `The value has been set.`, [target, p, value])
-        Administration.get(root)?.onChange()
 
         return true
       }
     }
-  }
-
-  static isObjectPropertyProxiable(property: any): boolean {
-    if (!property?.toString) {
-      return false
-    }
-
-    switch (true) {
-      case property instanceof Array:
-        return true
-      default:
-        break
-    }
-
-    switch (property.toString()) {
-      case '[object Object]':
-      case '[object Map]':
-      case '[object Set]':
-        return true
-      default:
-        return false
-    }
-  }
-
-  static isObjectPropertyNotProxiable(property: any): boolean {
-    return this.isObjectPropertyProxiable(property) === false
-  }
-
-  static isPropertyProxy(property: any): boolean {
-    return property?.isProxy
   }
 }

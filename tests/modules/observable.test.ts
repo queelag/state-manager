@@ -1,18 +1,23 @@
-import { observe as _observe } from '../../src'
+import { IS_PROXY_KEY } from '../../src/definitions/constants'
 import { Administration } from '../../src/modules/administration'
+import { Observable } from '../../src/modules/observable'
 import { Store } from '../get.test.store'
 
-let onChange: jest.Mock
+describe('Observable', () => {
+  let store: Store, onChange: jest.Mock
 
-function observe<T extends object, K extends keyof T>(target: T, keys: K[]) {
-  _observe(target, keys)
-  Reflect.set(Administration.get(target) || {}, 'onChange', onChange)
+  beforeAll(() => {
+    let make: <T extends object, K extends keyof T>(target: T, keys: K[]) => T
 
-  return target
-}
+    make = Observable.make
 
-describe('observe', () => {
-  let store: Store
+    Reflect.set(Observable, 'make', <T extends object, K extends keyof T>(target: T, keys: K[]) => {
+      make(target, keys)
+      Reflect.set(Administration.get(target) || {}, 'onChange', onChange)
+
+      return target
+    })
+  })
 
   beforeEach(() => {
     store = new Store()
@@ -20,7 +25,7 @@ describe('observe', () => {
   })
 
   it('works with bigint', () => {
-    observe(store, ['bigint'])
+    Observable.make(store, ['bigint'])
 
     store.bigint++
     expect(store.bigint).toBe(1n)
@@ -28,7 +33,7 @@ describe('observe', () => {
   })
 
   it('works with boolean', () => {
-    observe(store, ['boolean'])
+    Observable.make(store, ['boolean'])
 
     store.boolean = true
     expect(store.boolean).toBeTruthy()
@@ -40,7 +45,7 @@ describe('observe', () => {
   })
 
   it('works with function', () => {
-    observe(store, ['function'])
+    Observable.make(store, ['function'])
 
     store.function = () => true
     expect(store.function()).toBeTruthy()
@@ -48,7 +53,7 @@ describe('observe', () => {
   })
 
   it('works with null', () => {
-    observe(store, ['null'])
+    Observable.make(store, ['null'])
 
     store.null = 0
     expect(store.null).toBe(0)
@@ -60,7 +65,7 @@ describe('observe', () => {
   })
 
   it('works with number', () => {
-    observe(store, ['number'])
+    Observable.make(store, ['number'])
 
     store.number++
     expect(store.number).toBe(1)
@@ -68,7 +73,7 @@ describe('observe', () => {
   })
 
   it('works with object', () => {
-    observe(store, ['object'])
+    Observable.make(store, ['object'])
 
     store.object.a = 0
     expect(store.object).toStrictEqual({ a: 0 })
@@ -98,7 +103,7 @@ describe('observe', () => {
     onChange = jest.fn()
 
     store.object = { a: 0, b: { c: 0 } }
-    observe(store, ['object'])
+    Observable.make(store, ['object'])
 
     store.object.a++
     expect(store.object).toStrictEqual({ a: 1, b: { c: 0 } })
@@ -116,7 +121,7 @@ describe('observe', () => {
   })
 
   it('works with string', () => {
-    observe(store, ['string'])
+    Observable.make(store, ['string'])
 
     store.string = 'a'
     expect(store.string).toBe('a')
@@ -126,7 +131,7 @@ describe('observe', () => {
   it('works with symbol', () => {
     let symbol: symbol
 
-    observe(store, ['symbol'])
+    Observable.make(store, ['symbol'])
 
     symbol = Symbol()
     store.symbol = symbol
@@ -136,7 +141,7 @@ describe('observe', () => {
   })
 
   it('works with undefined', () => {
-    observe(store, ['undefined'])
+    Observable.make(store, ['undefined'])
 
     store.undefined = 0
     expect(store.undefined).toBe(0)
@@ -148,7 +153,7 @@ describe('observe', () => {
   })
 
   it('works with array', () => {
-    observe(store, ['array'])
+    Observable.make(store, ['array'])
 
     store.array.push(0)
     expect(store.array[0]).toBe(0)
@@ -156,25 +161,25 @@ describe('observe', () => {
 
     store.array.pop()
     expect(store.array).toHaveLength(0)
-    expect(onChange).toBeCalledTimes(2)
+    expect(onChange).toBeCalledTimes(3)
 
     store.array[0] = [0]
     expect(store.array).toStrictEqual([[0]])
     expect(store.array[0]).toStrictEqual([0])
     expect(store.array[0][0]).toBe(0)
-    expect(onChange).toBeCalledTimes(3)
+    expect(onChange).toBeCalledTimes(4)
 
     store.array[0][0] = 1
     expect(store.array).toStrictEqual([[1]])
     expect(store.array[0]).toStrictEqual([1])
     expect(store.array[0][0]).toBe(1)
-    expect(onChange).toBeCalledTimes(4)
+    expect(onChange).toBeCalledTimes(5)
 
     store = new Store()
     onChange = jest.fn()
 
     store.array = [0, [0]]
-    observe(store, ['array'])
+    Observable.make(store, ['array'])
 
     store.array[0] = 1
     expect(store.array).toStrictEqual([1, [0]])
@@ -194,7 +199,7 @@ describe('observe', () => {
   it('works with date', () => {
     let date: Date
 
-    observe(store, ['date'])
+    Observable.make(store, ['date'])
 
     date = new Date()
     store.date = date
@@ -206,21 +211,21 @@ describe('observe', () => {
   it('does not observe an already observed target', () => {
     let administration: Administration<Store> | undefined
 
-    observe(store, [])
+    Observable.make(store, [])
     administration = Administration.get(store)
 
-    observe(store, [])
+    Observable.make(store, [])
     expect(Administration.get(store)).toBe(administration)
 
     store = new Store()
     store.object.a = { b: {} }
-    observe(store, ['object'])
+    Observable.make(store, ['object'])
 
     store.object.b = store.object.a
   })
 
   it('exposes the isProxy property for observed values', () => {
-    observe(store, ['object'])
+    Observable.make(store, ['object'])
 
     expect(store.object.isProxy).toBeTruthy()
     expect(() => {
@@ -230,11 +235,11 @@ describe('observe', () => {
 
   it('does not throw when an object does not have the toString method', () => {
     Reflect.set(store.object, 'toString', undefined)
-    expect(() => observe(store, ['object'])).not.toThrow()
+    expect(() => Observable.make(store, ['object'])).not.toThrow()
   })
 
   it('fails when trying to set protected properties', () => {
-    observe(store, ['object'])
+    Observable.make(store, ['object'])
 
     Object.defineProperty(store.object, 'a', {})
 
@@ -245,5 +250,19 @@ describe('observe', () => {
     expect(() => {
       store.object.a = {}
     }).toThrow()
+  })
+
+  it('throws when trying to define or delete isProxy property', () => {
+    Observable.make(store, ['object'])
+
+    expect(() => Object.defineProperty(store.object, IS_PROXY_KEY, {})).toThrow()
+    expect(() => delete store.object[IS_PROXY_KEY]).toThrow()
+  })
+
+  it('fails when trying to delete non configurable properties', () => {
+    Observable.make(store, ['object'])
+
+    Object.defineProperty(store.object, 'a', { configurable: false })
+    expect(() => delete store.object.a).toThrow()
   })
 })
