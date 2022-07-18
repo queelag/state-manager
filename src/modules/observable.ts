@@ -15,15 +15,15 @@ export class Observable {
     clone = { ...target }
     ModuleLogger.verbose('observe', `The target has been cloned.`, clone)
 
-    keys.forEach((k: keyof T) => {
-      Object.defineProperty(target, k, Observable.getPropertyDescriptor(target, k))
-      ModuleLogger.verbose('observe', `The property "${String(k)}" is now bound to the proxy.`)
-    })
-
     ObservableObject.makeProperties<T, any>(target, Observable.getProxyHandler(target), clone, keys)
 
     proxy = new Proxy(clone, Observable.getProxyHandler(target))
     ModuleLogger.verbose('observe', `The clone has been proxied.`, proxy)
+
+    keys.forEach((k: keyof T) => {
+      Object.defineProperty(target, k, Observable.getPropertyDescriptor(target, k))
+      ModuleLogger.verbose('observe', `The property "${String(k)}" is now bound to the proxy.`, [target[k]])
+    })
 
     Administration.define(target, keys, proxy)
     ModuleLogger.verbose('observe', `The administration class has been set.`, Administration.get(target))

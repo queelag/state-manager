@@ -1,5 +1,4 @@
 import { Administration } from './administration'
-import { ParentObject } from './parent.object'
 
 type SetAdd<T> = (value: T) => Set<T>
 type SetClear = () => void
@@ -41,8 +40,7 @@ export class ObservableSet {
       return true
     }
 
-    Administration.define(set, [], set)
-    ParentObject.define(set, target)
+    Administration.define(set, [], set, target, root)
 
     return set
   }

@@ -1,4 +1,4 @@
-import { IS_PROXY_KEY } from '../definitions/constants'
+import { ObservableObject } from './observable.object'
 
 /**
  * Checks if T is an observable.
@@ -18,5 +18,5 @@ import { IS_PROXY_KEY } from '../definitions/constants'
  * @category Module
  */
 export function isObservable<T extends object>(target: T): boolean {
-  return typeof target === 'object' && Reflect.get(target, IS_PROXY_KEY)
+  return ObservableObject.isPropertyProxy(target)
 }

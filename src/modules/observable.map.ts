@@ -1,5 +1,4 @@
 import { Administration } from './administration'
-import { ParentObject } from './parent.object'
 
 type MapClear = () => void
 type MapDelete<K> = (key: K) => boolean
@@ -41,8 +40,7 @@ export class ObservableMap {
       return map
     }
 
-    Administration.define(map, [], map)
-    ParentObject.define(map, target)
+    Administration.define(map, [], map, target, root)
 
     return map
   }

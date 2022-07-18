@@ -2,7 +2,6 @@ import { IS_PROXY_KEY } from '../definitions/constants'
 import { Administration } from './administration'
 import { ObservableMap } from './observable.map'
 import { ObservableSet } from './observable.set'
-import { ParentObject } from './parent.object'
 
 export class ObservableObject {
   static make<T extends object, U extends object, K extends keyof U = keyof U>(
@@ -31,7 +30,8 @@ export class ObservableObject {
     }
 
     if (ObservableObject.isPropertyProxy(property)) {
-      return Reflect.set(target, key, property, receiver)
+      property = { ...property }
+      Administration.delete(property)
     }
 
     switch (true) {
@@ -45,9 +45,7 @@ export class ObservableObject {
         let proxy: U
 
         proxy = new Proxy(property, handler)
-
-        Administration.define(property, Object.keys(property), proxy)
-        ParentObject.define(property, target)
+        Administration.define(property, Object.keys(property), proxy, target, root)
 
         return Reflect.set(target, key, proxy, receiver)
     }
@@ -96,5 +94,9 @@ export class ObservableObject {
 
   static isPropertyProxy(property: any): boolean {
     return typeof property === 'object' && Reflect.get(property, IS_PROXY_KEY) === true
+  }
+
+  static isPropertyNotProxy(property: any): boolean {
+    return ObservableObject.isPropertyProxy(property) === false
   }
 }

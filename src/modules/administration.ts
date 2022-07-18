@@ -2,16 +2,19 @@ import { Watcher } from '../classes/watcher'
 import { ADMINISTRATION_SYMBOL } from '../definitions/constants'
 import { WatcherType } from '../definitions/enums'
 import { ModuleLogger } from '../loggers/module.logger'
-import { ParentObject } from './parent.object'
 
 export class Administration<T extends object, K extends keyof T = keyof T> {
   keys: K[]
+  parent: object
   proxy: T
+  root: object
   watchers: Watcher[]
 
-  constructor(keys: K[], proxy: T) {
+  constructor(keys: K[], proxy: T, parent?: object, root?: object) {
     this.keys = keys
+    this.parent = parent || {}
     this.proxy = proxy
+    this.root = root || {}
     this.watchers = []
   }
 
@@ -47,22 +50,18 @@ export class Administration<T extends object, K extends keyof T = keyof T> {
       ModuleLogger.verbose('Administration', 'onChange', `The when effect has been executed.`, v)
     })
 
-    parent = ParentObject.get(this.proxy)
-    if (!parent) return
-
-    Administration.get(parent)?.onChange()
+    Administration.get(this.parent)?.onChange()
   }
 
-  static define<T extends object, K extends keyof T>(target: T, keys: K[], proxy: T): T {
+  static define<T extends object, K extends keyof T>(target: T, keys: K[], proxy: T, parent?: object, root?: object): T {
     if (Reflect.has(target, ADMINISTRATION_SYMBOL)) {
-      ModuleLogger.warn('Administration', 'set', `The target already has an Administration defined.`, target, keys, proxy)
       return target
     }
 
     return Object.defineProperty(target, ADMINISTRATION_SYMBOL, {
       configurable: false,
       enumerable: false,
-      value: new Administration(keys, proxy),
+      value: new Administration(keys, proxy, parent, root),
       writable: false
     })
   }
