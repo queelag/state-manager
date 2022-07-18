@@ -1,4 +1,5 @@
 import { ADMINISTRATION_SYMBOL } from '../../src/definitions/constants'
+import { Observable } from '../../src/modules/observable'
 import { ObservableSet } from '../../src/modules/observable.set'
 
 describe('ObservableSet', () => {
@@ -9,7 +10,7 @@ describe('ObservableSet', () => {
     root = { [ADMINISTRATION_SYMBOL]: { onChange } }
     set = new Set()
 
-    ObservableSet.make(root, set)
+    ObservableSet.make(root, Observable.getProxyHandler(root), set)
 
     expect(set.add(0)).toBe(set)
     expect(set.has(0)).toBeTruthy()

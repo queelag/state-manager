@@ -2,9 +2,17 @@ import { IS_PROXY_KEY } from '../definitions/constants'
 import { Administration } from './administration'
 import { ObservableMap } from './observable.map'
 import { ObservableSet } from './observable.set'
+import { ParentObject } from './parent.object'
 
 export class ObservableObject {
-  static make<T extends object, K extends keyof T = keyof T>(handler: ProxyHandler<T>, target: T, key: K, property: any, receiver: any): boolean {
+  static make<T extends object, U extends object, K extends keyof U = keyof U>(
+    root: T,
+    handler: ProxyHandler<U>,
+    target: U,
+    key: K,
+    property: any,
+    receiver: any
+  ): boolean {
     if (property === null) {
       return Reflect.set(target, key, property, receiver)
     }
@@ -18,7 +26,7 @@ export class ObservableObject {
       case property instanceof Set:
         break
       default:
-        ObservableObject.makeProperties(handler, property, Object.keys(property))
+        ObservableObject.makeProperties(root, handler, property, Object.keys(property))
         break
     }
 
@@ -28,16 +36,18 @@ export class ObservableObject {
 
     switch (true) {
       case property instanceof Map:
-        ObservableMap.make(handler, property)
+        ObservableMap.make(root, target, property)
         break
       case property instanceof Set:
-        ObservableSet.make(handler, property)
+        ObservableSet.make(root, target, property)
         break
       default:
-        let proxy: T
+        let proxy: U
 
         proxy = new Proxy(property, handler)
-        Administration.set(property, Object.keys(property), proxy)
+
+        Administration.define(property, Object.keys(property), proxy)
+        ParentObject.define(property, target)
 
         return Reflect.set(target, key, proxy, receiver)
     }
@@ -45,7 +55,7 @@ export class ObservableObject {
     return true
   }
 
-  static makeProperties<T extends object, K extends keyof T = keyof T>(handler: ProxyHandler<T>, target: T, keys: K[]): boolean {
+  static makeProperties<T extends object, U extends object, K extends keyof U = keyof U>(root: T, handler: ProxyHandler<U>, target: U, keys: K[]): boolean {
     return keys
       .map((k: K) => {
         let value: any
@@ -53,7 +63,7 @@ export class ObservableObject {
         value = Reflect.get(target, k)
         if (typeof value !== 'object') return true
 
-        return ObservableObject.make(handler, target, k, Reflect.get(target, k), target)
+        return ObservableObject.make(root, handler, target, k, Reflect.get(target, k), target)
       })
       .every(Boolean)
   }

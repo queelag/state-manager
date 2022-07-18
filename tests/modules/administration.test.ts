@@ -96,6 +96,6 @@ describe('Administration', () => {
   })
 
   it('does not set if already exists', () => {
-    expect(() => Administration.set(store, [], new Proxy(store, {}))).not.toThrow()
+    expect(() => Administration.define(store, [], new Proxy(store, {}))).not.toThrow()
   })
 })

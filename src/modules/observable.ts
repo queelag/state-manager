@@ -20,12 +20,12 @@ export class Observable {
       ModuleLogger.verbose('observe', `The property "${String(k)}" is now bound to the proxy.`, [target[k]])
     })
 
-    ObservableObject.makeProperties<T>(Observable.getProxyHandler(target), clone, keys)
+    ObservableObject.makeProperties<T, any>(clone, Observable.getProxyHandler(target), clone, keys)
 
     proxy = new Proxy(clone, Observable.getProxyHandler(target))
     ModuleLogger.verbose('observe', `The clone has been proxied.`, proxy)
 
-    Administration.set(target, keys, proxy)
+    Administration.define(target, keys, proxy)
     ModuleLogger.verbose('observe', `The administration class has been set.`, Administration.get(target))
 
     return target
@@ -61,7 +61,9 @@ export class Observable {
         deleted = Reflect.deleteProperty(target, p)
         if (!deleted) return false
 
+        Administration.get(root)?.onChange()
         Administration.get(target)?.onChange()
+
         ModuleLogger.verbose('Observable', 'getProxyHandler', 'deleteProperty', `The property has been deleted.`, [target, p])
 
         return true
@@ -74,7 +76,7 @@ export class Observable {
         return Reflect.get(target, p, receiver)
       },
       set: (target: U, p: PropertyKey, value: any, receiver: any) => {
-        let set: boolean, administration: Administration<U> | Administration<T> | undefined
+        let set: boolean
 
         if (p === IS_PROXY_KEY) {
           return false
@@ -86,7 +88,7 @@ export class Observable {
 
         switch (typeof value) {
           case 'object':
-            set = ObservableObject.make<U>(Observable.getProxyHandler(root), target, p as keyof U, value, receiver)
+            set = ObservableObject.make<T, U>(root, Observable.getProxyHandler(root), target, p as keyof U, value, receiver)
             if (!set) return false
 
             break
@@ -97,8 +99,8 @@ export class Observable {
             break
         }
 
-        administration = Administration.get(target) || Administration.get(root)
-        administration?.onChange()
+        Administration.get(root)?.onChange()
+        Administration.get(target)?.onChange()
 
         ModuleLogger.verbose('ProxyObservable', 'getHandler', 'set', `The value has been set.`, [target, p, value])
 
