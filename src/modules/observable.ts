@@ -17,10 +17,10 @@ export class Observable {
 
     keys.forEach((k: keyof T) => {
       Object.defineProperty(target, k, Observable.getPropertyDescriptor(target, k))
-      ModuleLogger.verbose('observe', `The property "${String(k)}" is now bound to the proxy.`, [target[k]])
+      ModuleLogger.verbose('observe', `The property "${String(k)}" is now bound to the proxy.`)
     })
 
-    ObservableObject.makeProperties<T, any>(clone, Observable.getProxyHandler(target), clone, keys)
+    ObservableObject.makeProperties<T, any>(target, Observable.getProxyHandler(target), clone, keys)
 
     proxy = new Proxy(clone, Observable.getProxyHandler(target))
     ModuleLogger.verbose('observe', `The clone has been proxied.`, proxy)
