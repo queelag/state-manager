@@ -1,10 +1,11 @@
 import { IS_PROXY_KEY } from '../definitions/constants'
 import { ModuleLogger } from '../loggers/module.logger'
 import { Administration } from './administration'
+import { GLOBAL_OBSERVABLE } from './global.observable'
 import { ObservableObject } from './observable.object'
 
 export class Observable {
-  static make<T extends object, K extends keyof T>(target: T, keys: K[]): T {
+  static make<T extends object, K extends keyof T>(target: T, keys: K[] = Object.keys(target) as K[]): T {
     let clone: T, proxy: T
 
     if (Administration.isDefined(target)) {
@@ -63,6 +64,7 @@ export class Observable {
 
         Administration.get(root)?.onChange()
         Administration.get(target)?.onChange()
+        Administration.get(GLOBAL_OBSERVABLE)?.onChange()
 
         ModuleLogger.verbose('Observable', 'getProxyHandler', 'deleteProperty', `The property has been deleted.`, [target, p])
 
@@ -101,6 +103,7 @@ export class Observable {
 
         Administration.get(root)?.onChange()
         Administration.get(target)?.onChange()
+        Administration.get(GLOBAL_OBSERVABLE)?.onChange()
 
         ModuleLogger.verbose('ProxyObservable', 'getHandler', 'set', `The value has been set.`, [target, p, value])
 

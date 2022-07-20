@@ -25,7 +25,7 @@ import { watch } from './watch'
  *
  * @category Module
  */
-export function when<T extends object>(predicate: WatcherWhenPredicate, effect: WatcherWhenEffect, target: T): WatcherDisposer
+export function when<T extends object>(predicate: WatcherWhenPredicate, effect: WatcherWhenEffect, target?: T): WatcherDisposer
 /**
  * Returns a Promise which will be resolved when the predicate is truthy.
  *
@@ -42,9 +42,9 @@ export function when<T extends object>(predicate: WatcherWhenPredicate, effect: 
  *
  * @category Module
  */
-export function when<T extends object>(predicate: WatcherWhenPredicate, target: T): Promise<void>
+export function when<T extends object>(predicate: WatcherWhenPredicate, target?: T): Promise<void>
 export function when<T extends object>(predicate: WatcherWhenPredicate, ...args: any): any {
-  let effect: WatcherWhenEffect, target: T
+  let effect: WatcherWhenEffect, target: T | undefined
 
   switch (args.length) {
     case 1:

@@ -1,5 +1,6 @@
 import { IS_PROXY_KEY } from '../definitions/constants'
 import { Administration } from './administration'
+import { GLOBAL_OBSERVABLE } from './global.observable'
 
 type MapClear = () => void
 type MapDelete<K> = (key: K) => boolean
@@ -22,6 +23,7 @@ export class ObservableMap {
 
       Administration.get(root)?.onChange()
       Administration.get(map)?.onChange()
+      Administration.get(GLOBAL_OBSERVABLE)?.onChange()
     }
     map.delete = (key: K) => {
       let deleted: boolean
@@ -31,6 +33,7 @@ export class ObservableMap {
 
       Administration.get(root)?.onChange()
       Administration.get(map)?.onChange()
+      Administration.get(GLOBAL_OBSERVABLE)?.onChange()
 
       return true
     }
@@ -41,6 +44,7 @@ export class ObservableMap {
 
       Administration.get(root)?.onChange()
       Administration.get(map)?.onChange()
+      Administration.get(GLOBAL_OBSERVABLE)?.onChange()
 
       return map
     }

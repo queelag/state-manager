@@ -1,5 +1,4 @@
 import { ADMINISTRATION_SYMBOL } from '../../src/definitions/constants'
-import { Observable } from '../../src/modules/observable'
 import { ObservableMap } from '../../src/modules/observable.map'
 
 describe('ObservableMap', () => {
@@ -10,7 +9,7 @@ describe('ObservableMap', () => {
     root = { [ADMINISTRATION_SYMBOL]: { onChange } }
     map = new Map()
 
-    ObservableMap.make(root, Observable.getProxyHandler(root), map)
+    ObservableMap.make(root, {}, '', map, {})
 
     expect(map.set(0, 0)).toBe(map)
     expect(map.get(0)).toBe(0)

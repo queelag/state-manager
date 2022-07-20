@@ -23,6 +23,6 @@ import { watch } from './watch'
  *
  * @category Module
  */
-export function reaction<T extends object, U>(expression: WatcherReactionExpression<U>, effect: WatcherReactionEffect<U>, target: T): WatcherDisposer {
+export function reaction<T extends object, U>(expression: WatcherReactionExpression<U>, effect: WatcherReactionEffect<U>, target?: T): WatcherDisposer {
   return watch(WatcherType.REACTION, expression, effect, target)
 }

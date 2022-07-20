@@ -19,6 +19,6 @@ import { watch } from './watch'
  *
  * @category Module
  */
-export function autorun<T extends object>(effect: WatcherAutorunEffect, target: T): WatcherDisposer {
+export function autorun<T extends object>(effect: WatcherAutorunEffect, target?: T): WatcherDisposer {
   return watch(WatcherType.AUTORUN, effect, target)
 }

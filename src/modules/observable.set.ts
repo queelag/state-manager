@@ -1,5 +1,6 @@
 import { IS_PROXY_KEY } from '../definitions/constants'
 import { Administration } from './administration'
+import { GLOBAL_OBSERVABLE } from './global.observable'
 
 type SetAdd<T> = (value: T) => Set<T>
 type SetClear = () => void
@@ -24,6 +25,7 @@ export class ObservableSet {
 
       Administration.get(root)?.onChange()
       Administration.get(set)?.onChange()
+      Administration.get(GLOBAL_OBSERVABLE)?.onChange()
 
       return set
     }
@@ -32,6 +34,7 @@ export class ObservableSet {
 
       Administration.get(root)?.onChange()
       Administration.get(set)?.onChange()
+      Administration.get(GLOBAL_OBSERVABLE)?.onChange()
     }
     set.delete = (value: V) => {
       let deleted: boolean
@@ -41,6 +44,7 @@ export class ObservableSet {
 
       Administration.get(root)?.onChange()
       Administration.get(set)?.onChange()
+      Administration.get(GLOBAL_OBSERVABLE)?.onChange()
 
       return true
     }
