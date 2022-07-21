@@ -10,7 +10,7 @@ describe('reaction', () => {
     expression = () => store.number
     effect = jest.fn()
 
-    reaction(expression, effect, store)
+    reaction(expression, effect)
 
     expect(effect).not.toBeCalled()
 

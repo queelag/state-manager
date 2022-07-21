@@ -1,33 +1,38 @@
+import { OBSERVABLE_COLLECTOR } from '../collectors/observable.collector'
 import { IS_PROXY_KEY } from '../definitions/constants'
+import { WatcherObservableType, WriteType } from '../definitions/enums'
 import { ModuleLogger } from '../loggers/module.logger'
 import { Administration } from './administration'
-import { GLOBAL_OBSERVABLE } from './global.observable'
 import { ObservableObject } from './observable.object'
+import { WatcherManager } from './watcher.manager'
 
 export class Observable {
   static make<T extends object, K extends keyof T>(target: T, keys: K[] = Object.keys(target) as K[]): T {
     let clone: T, proxy: T
 
     if (Administration.isDefined(target)) {
-      ModuleLogger.warn('observe', `The target is already an observable.`, target)
+      ModuleLogger.warn('Observable', 'make', `The target is already an observable.`, target)
       return target
     }
 
     clone = { ...target }
-    ModuleLogger.verbose('observe', `The target has been cloned.`, clone)
+    ModuleLogger.verbose('Observable', 'make', `The target has been cloned.`, clone)
 
     ObservableObject.makeProperties<T, any>(target, Observable.getProxyHandler(target), clone, keys)
 
     proxy = new Proxy(clone, Observable.getProxyHandler(target))
-    ModuleLogger.verbose('observe', `The clone has been proxied.`, proxy)
+    ModuleLogger.verbose('Observable', 'make', `The clone has been proxied.`, proxy)
 
     keys.forEach((k: keyof T) => {
       Object.defineProperty(target, k, Observable.getPropertyDescriptor(target, k))
-      ModuleLogger.verbose('observe', `The property "${String(k)}" is now bound to the proxy.`, [target[k]])
+      ModuleLogger.verbose('Observable', 'make', `The property "${String(k)}" is now bound to the proxy.`, [target[k]])
     })
 
     Administration.define(target, keys, proxy)
-    ModuleLogger.verbose('observe', `The administration class has been set.`, Administration.get(target))
+    ModuleLogger.verbose('Observable', 'make', `The administration class has been set.`, Administration.get(target))
+
+    OBSERVABLE_COLLECTOR.push(target)
+    ModuleLogger.verbose('Observable', 'make', `The target has been pushed to the observable collector.`)
 
     return target
   }
@@ -62,20 +67,24 @@ export class Observable {
         deleted = Reflect.deleteProperty(target, p)
         if (!deleted) return false
 
-        Administration.get(root)?.onChange()
-        Administration.get(target)?.onChange()
-        Administration.get(GLOBAL_OBSERVABLE)?.onChange()
-
         ModuleLogger.verbose('Observable', 'getProxyHandler', 'deleteProperty', `The property has been deleted.`, [target, p])
+        WatcherManager.onWrite(WriteType.PROXY_HANDLER_DELETE_PROPERTY, target, p, undefined)
 
         return true
       },
       get: (target: U, p: PropertyKey, receiver: any) => {
+        let property: any
+
         if (p === IS_PROXY_KEY) {
           return true
         }
 
-        return Reflect.get(target, p, receiver)
+        property = Reflect.get(target, p, receiver)
+        ModuleLogger.verbose('Observable', 'getProxyHandler', 'get', `The property has been read.`, [target, p, property])
+
+        WatcherManager.onRead(WatcherObservableType.PROXY_HANDLER_GET, target, p, property, receiver)
+
+        return property
       },
       set: (target: U, p: PropertyKey, value: any, receiver: any) => {
         let set: boolean
@@ -101,11 +110,8 @@ export class Observable {
             break
         }
 
-        Administration.get(root)?.onChange()
-        Administration.get(target)?.onChange()
-        Administration.get(GLOBAL_OBSERVABLE)?.onChange()
-
         ModuleLogger.verbose('ProxyObservable', 'getHandler', 'set', `The value has been set.`, [target, p, value])
+        WatcherManager.onWrite(WriteType.PROXY_HANDLER_SET, target, p, value)
 
         return true
       }

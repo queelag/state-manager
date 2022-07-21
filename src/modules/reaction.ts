@@ -3,7 +3,7 @@ import { WatcherDisposer, WatcherReactionEffect, WatcherReactionExpression } fro
 import { watch } from './watch'
 
 /**
- * Runs an effect when the value returned from the expression changes.
+ * Runs an effect when any of the properties used inside the expression change.
  *
  * ```ts
  * import { observe, reaction } from '@queelag/state-manager'
@@ -14,8 +14,7 @@ import { watch } from './watch'
  *   () => store.number,
  *   () => {
  *     console.log(store.number)
- *   },
- *   store
+ *   }
  * )
  *
  * store.number++
@@ -23,6 +22,6 @@ import { watch } from './watch'
  *
  * @category Module
  */
-export function reaction<T extends object, U>(expression: WatcherReactionExpression<U>, effect: WatcherReactionEffect<U>, target?: T): WatcherDisposer {
-  return watch(WatcherType.REACTION, expression, effect, target)
+export function reaction<T>(expression: WatcherReactionExpression<T>, effect: WatcherReactionEffect<T>): WatcherDisposer {
+  return watch(WatcherType.REACTION, expression, effect)
 }

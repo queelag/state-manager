@@ -41,7 +41,7 @@ export function getTestStore(): Store {
   let store: Store
 
   store = new Store()
-  observe(store, Object.keys(store) as any)
+  observe(store)
 
   return store
 }

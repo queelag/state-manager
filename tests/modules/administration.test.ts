@@ -1,5 +1,5 @@
 import { observe, watch, WatcherType } from '../../src'
-import { WatcherAutorunEffect, WatcherDispatchEffect, WatcherReactionEffect, WatcherWhenEffect } from '../../src/definitions/types'
+import { WatcherAutorunEffect, WatcherReactionEffect, WatcherWhenEffect } from '../../src/definitions/types'
 import { Administration } from '../../src/modules/administration'
 import { getTestStore, Store } from '../get.test.store'
 
@@ -25,7 +25,7 @@ describe('Administration', () => {
     expect(administration).toBeDefined()
 
     expect(administration?.keys).toBe(keys)
-    expect(administration?.watchers).toHaveLength(0)
+    // expect(administration?.watchers).toHaveLength(0)
 
     keys.forEach((k: keyof Store) => {
       expect(store[k]).toBe(administration?.proxy[k])
@@ -54,43 +54,37 @@ describe('Administration', () => {
   })
 
   it('handles every watcher when there are changes', () => {
-    let ae: WatcherAutorunEffect, de: WatcherDispatchEffect, re: WatcherReactionEffect<number>, we: WatcherWhenEffect
+    let ae: WatcherAutorunEffect, re: WatcherReactionEffect<number>, we: WatcherWhenEffect
 
     ae = jest.fn()
-    de = jest.fn()
     re = jest.fn()
     we = jest.fn()
 
-    watch(WatcherType.AUTORUN, ae, store)
-    watch(WatcherType.DISPATCH, de, store)
-    watch(WatcherType.REACTION, () => store.number, re, store)
-    watch(WatcherType.WHEN, () => store.boolean, we, store)
+    watch(WatcherType.AUTORUN, ae)
+    watch(WatcherType.REACTION, () => store.number, re)
+    watch(WatcherType.WHEN, () => store.boolean, we)
 
     store.boolean = true
 
     expect(ae).toBeCalledTimes(1)
-    expect(de).toBeCalledTimes(1)
     expect(re).toBeCalledTimes(0)
     expect(we).toBeCalledTimes(1)
 
     store.number++
 
-    expect(ae).toBeCalledTimes(2)
-    expect(de).toBeCalledTimes(2)
+    expect(ae).toBeCalledTimes(1)
     expect(re).toBeCalledTimes(1)
     expect(we).toBeCalledTimes(1)
 
     store.string = 'a'
 
-    expect(ae).toBeCalledTimes(3)
-    expect(de).toBeCalledTimes(3)
+    expect(ae).toBeCalledTimes(1)
     expect(re).toBeCalledTimes(1)
     expect(we).toBeCalledTimes(1)
 
     store.boolean = false
 
-    expect(ae).toBeCalledTimes(4)
-    expect(de).toBeCalledTimes(4)
+    expect(ae).toBeCalledTimes(1)
     expect(re).toBeCalledTimes(1)
     expect(we).toBeCalledTimes(1)
   })

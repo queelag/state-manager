@@ -8,7 +8,7 @@ describe('when', () => {
     store = getTestStore()
     effect = jest.fn()
 
-    when(() => store.boolean, effect, store)
+    when(() => store.boolean, effect)
 
     store.boolean = true
     expect(effect).toBeCalledTimes(1)
@@ -22,7 +22,7 @@ describe('when', () => {
     onfinally = jest.fn()
     onthen = jest.fn()
 
-    promise = when(() => store.boolean, store)
+    promise = when(() => store.boolean)
       .catch(oncatch)
       .finally(onfinally)
       .then(onthen)

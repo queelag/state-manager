@@ -1,40 +1,41 @@
 import { IS_PROXY_KEY } from '../definitions/constants'
+import { WatcherObservableType, WriteType } from '../definitions/enums'
 import { Administration } from './administration'
-import { GLOBAL_OBSERVABLE } from './global.observable'
+import { WatcherManager } from './watcher.manager'
 
 type SetAdd<T> = (value: T) => Set<T>
 type SetClear = () => void
 type SetDelete<T> = (value: T) => boolean
+type SetEntries<T> = () => IterableIterator<[T, T]>
+type SetKeys<T> = () => IterableIterator<T>
+type SetValues<T> = () => IterableIterator<T>
 
 export class ObservableSet {
   static make<T extends object, U extends object, V>(root: T, target: U, key: PropertyKey, set: Set<V>, receiver: any): boolean {
-    let _add: SetAdd<V>, _clear: SetClear, _delete: SetDelete<V>
+    let _add: SetAdd<V>, _clear: SetClear, _delete: SetDelete<V>, _entries: SetEntries<V>, _keys: SetKeys<V>, _values: SetValues<V>
 
     if (ObservableSet.isProxy(set)) {
-      set = ObservableSet.toJS(set)
+      return true
     }
 
     _add = set.add.bind(set)
     _clear = set.clear.bind(set)
     _delete = set.delete.bind(set)
+    _entries = set.entries.bind(set)
+    _keys = set.keys.bind(set)
+    _values = set.values.bind(set)
 
     set.add = (value: V) => {
       let set: Set<V>
 
       set = _add(value)
-
-      Administration.get(root)?.onChange()
-      Administration.get(set)?.onChange()
-      Administration.get(GLOBAL_OBSERVABLE)?.onChange()
+      WatcherManager.onWrite(WriteType.SET_ADD, set, 'add', value)
 
       return set
     }
     set.clear = () => {
       _clear()
-
-      Administration.get(root)?.onChange()
-      Administration.get(set)?.onChange()
-      Administration.get(GLOBAL_OBSERVABLE)?.onChange()
+      WatcherManager.onWrite(WriteType.SET_CLEAR, set, 'clear', set)
     }
     set.delete = (value: V) => {
       let deleted: boolean
@@ -42,11 +43,21 @@ export class ObservableSet {
       deleted = _delete(value)
       if (!deleted) return false
 
-      Administration.get(root)?.onChange()
-      Administration.get(set)?.onChange()
-      Administration.get(GLOBAL_OBSERVABLE)?.onChange()
+      WatcherManager.onWrite(WriteType.SET_DELETE, set, value as any, undefined)
 
       return true
+    }
+    set.entries = () => {
+      WatcherManager.onRead(WatcherObservableType.SET_ENTRIES, set, 'entries', [..._entries()])
+      return _entries()
+    }
+    set.keys = () => {
+      WatcherManager.onRead(WatcherObservableType.SET_KEYS, set, 'keys', [..._keys()])
+      return _keys()
+    }
+    set.values = () => {
+      WatcherManager.onRead(WatcherObservableType.SET_VALUES, set, 'values', [..._values()])
+      return _values()
     }
 
     Object.defineProperty(set, IS_PROXY_KEY, {

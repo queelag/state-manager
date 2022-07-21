@@ -7,12 +7,12 @@ describe('autorun', () => {
     let store: Store, effect: WatcherAutorunEffect
 
     store = getTestStore()
-    effect = jest.fn()
+    effect = jest.fn(() => store.number)
 
-    autorun(effect, store)
+    autorun(effect)
 
-    expect(effect).not.toBeCalled()
-    store.number++
     expect(effect).toBeCalledTimes(1)
+    store.number++
+    expect(effect).toBeCalledTimes(2)
   })
 })

@@ -15,8 +15,7 @@ import { watch } from './watch'
  *   () => store.boolean,
  *   () => {
  *     console.log(store.boolean)
- *   },
- *   store
+ *   }
  * )
  *
  * store.boolean = true
@@ -25,7 +24,7 @@ import { watch } from './watch'
  *
  * @category Module
  */
-export function when<T extends object>(predicate: WatcherWhenPredicate, effect: WatcherWhenEffect, target?: T): WatcherDisposer
+export function when(predicate: WatcherWhenPredicate, effect: WatcherWhenEffect): WatcherDisposer
 /**
  * Returns a Promise which will be resolved when the predicate is truthy.
  *
@@ -34,7 +33,7 @@ export function when<T extends object>(predicate: WatcherWhenPredicate, effect: 
  *
  * const store = observe({ boolean: false })
  *
- * when(() => store.boolean, store).then(() => console.log(store.boolean))
+ * when(() => store.boolean).then(() => console.log(store.boolean))
  *
  * store.boolean = true
  * store.boolean = false
@@ -42,28 +41,24 @@ export function when<T extends object>(predicate: WatcherWhenPredicate, effect: 
  *
  * @category Module
  */
-export function when<T extends object>(predicate: WatcherWhenPredicate, target?: T): Promise<void>
-export function when<T extends object>(predicate: WatcherWhenPredicate, ...args: any): any {
-  let effect: WatcherWhenEffect, target: T | undefined
+export function when(predicate: WatcherWhenPredicate): Promise<void>
+export function when(predicate: WatcherWhenPredicate, ...args: any): any {
+  let effect: WatcherWhenEffect
 
   switch (args.length) {
-    case 1:
+    case 0:
       let promise: DeferredPromise<void>, disposer: WatcherDisposer
 
       effect = () => {
         disposer()
         promise.resolve()
       }
-      target = args[0]
 
       promise = new DeferredPromise()
-      disposer = watch(WatcherType.WHEN, predicate, effect, target)
+      disposer = watch(WatcherType.WHEN, predicate, effect)
 
       return promise.instance
-    case 2:
-      effect = args[0]
-      target = args[1]
-
-      return watch(WatcherType.WHEN, predicate, effect, target)
+    case 1:
+      return watch(WatcherType.WHEN, predicate, args[0])
   }
 }

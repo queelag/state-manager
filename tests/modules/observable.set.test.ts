@@ -1,32 +1,34 @@
-import { ADMINISTRATION_SYMBOL } from '../../src/definitions/constants'
 import { ObservableSet } from '../../src/modules/observable.set'
+import { WatcherManager } from '../../src/modules/watcher.manager'
 
 describe('ObservableSet', () => {
   it('makes a set observable', () => {
-    let onChange: jest.Mock, root: object, set: Set<any>
+    let set: Set<any>
 
-    onChange = jest.fn()
-    root = { [ADMINISTRATION_SYMBOL]: { onChange } }
+    WatcherManager.onWrite = jest.fn()
+
     set = new Set()
-
-    ObservableSet.make(root, {}, '', set, {})
+    ObservableSet.make({}, {}, '', set, {})
 
     expect(set.add(0)).toBe(set)
     expect(set.has(0)).toBeTruthy()
-    expect(onChange).toBeCalledTimes(1)
+    expect(WatcherManager.onWrite).toBeCalledTimes(1)
 
     expect(set.add(1)).toBe(set)
     expect(set.has(1)).toBeTruthy()
-    expect(onChange).toBeCalledTimes(2)
+    expect(WatcherManager.onWrite).toBeCalledTimes(2)
 
     expect(set.delete(0)).toBeTruthy()
     expect(set.has(0)).toBeFalsy()
-    expect(onChange).toBeCalledTimes(3)
+    expect(WatcherManager.onWrite).toBeCalledTimes(3)
     expect(set.delete(0)).toBeFalsy()
-    expect(onChange).toBeCalledTimes(3)
+    expect(WatcherManager.onWrite).toBeCalledTimes(3)
 
     set.clear()
+    expect([...set.entries()]).toHaveLength(0)
+    expect([...set.keys()]).toHaveLength(0)
+    expect([...set.values()]).toHaveLength(0)
     expect(set.size).toBe(0)
-    expect(onChange).toBeCalledTimes(4)
+    expect(WatcherManager.onWrite).toBeCalledTimes(4)
   })
 })

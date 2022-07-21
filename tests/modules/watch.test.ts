@@ -1,6 +1,6 @@
 import { noop } from '@queelag/core'
 import { watch, WatcherType } from '../../src'
-import { Administration } from '../../src/modules/administration'
+import { WatcherManager } from '../../src/modules/watcher.manager'
 import { getTestStore, Store } from '../get.test.store'
 
 describe('watch', () => {
@@ -9,15 +9,15 @@ describe('watch', () => {
 
     store = getTestStore()
 
-    watch(WatcherType.AUTORUN, noop, store)
-    watch(WatcherType.AUTORUN, noop, store)
-    watch(WatcherType.DISPATCH, noop, store)
-    watch(WatcherType.DISPATCH, noop, store)
-    watch(WatcherType.REACTION, noop, noop, store)
-    watch(WatcherType.REACTION, noop, noop, store)
-    watch(WatcherType.WHEN, noop, noop, store)
-    watch(WatcherType.WHEN, noop, noop, store)
+    watch(WatcherType.AUTORUN, noop)
+    watch(WatcherType.AUTORUN, noop)
+    watch(WatcherType.REACTION, noop, noop)
+    watch(WatcherType.REACTION, noop, noop)
+    watch(WatcherType.READ, noop)
+    watch(WatcherType.READ, noop)
+    watch(WatcherType.WHEN, noop, noop)
+    watch(WatcherType.WHEN, noop, noop)
 
-    expect(Administration.get(store)?.watchers).toHaveLength(4)
+    expect(WatcherManager.watchers).toHaveLength(4)
   })
 })

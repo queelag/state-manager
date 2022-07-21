@@ -3,7 +3,7 @@ import { WatcherAutorunEffect, WatcherDisposer } from '../definitions/types'
 import { watch } from './watch'
 
 /**
- * Runs an effect on any target properties change.
+ * Runs an effect when any of the properties used inside of the effect change.
  *
  * ```ts
  * import { autorun, observe } from '@queelag/state-manager'
@@ -12,13 +12,13 @@ import { watch } from './watch'
  *
  * autorun(() => {
  *   console.log(store.number)
- * }, store)
+ * })
  *
  * store.number++
  * ```
  *
  * @category Module
  */
-export function autorun<T extends object>(effect: WatcherAutorunEffect, target?: T): WatcherDisposer {
-  return watch(WatcherType.AUTORUN, effect, target)
+export function autorun(effect: WatcherAutorunEffect): WatcherDisposer {
+  return watch(WatcherType.AUTORUN, effect)
 }
