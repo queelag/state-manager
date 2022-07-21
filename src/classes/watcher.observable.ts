@@ -76,6 +76,7 @@ export class WatcherObservable<T extends object = object> {
           }
 
           continue
+        case WatcherObservableType.MAP_GET:
         case WatcherObservableType.PROXY_HANDLER_GET:
           if (observable.value !== observable.get()) {
             return false
