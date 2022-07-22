@@ -7,6 +7,7 @@ export interface WatcherAutorun {
 export interface WatcherReaction<T> {
   effect: WatcherReactionEffect<T>
   expression: WatcherReactionExpression<T>
+  value: T
 }
 
 export interface WatcherRead<T extends object> {
@@ -16,4 +17,5 @@ export interface WatcherRead<T extends object> {
 export interface WatcherWhen {
   effect: WatcherWhenEffect
   predicate: WatcherWhenPredicate
+  value: boolean
 }

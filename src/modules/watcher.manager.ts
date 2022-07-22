@@ -24,10 +24,29 @@ export class WatcherManager {
   static onWrite(type: WriteType, target: object, key: PropertyKey, value: any): void {
     WatcherManager.watchers.forEach((v: Watcher) => {
       switch (v.type) {
+        case WatcherType.REACTION:
+          let rv: any
+
+          rv = v.reaction.expression()
+          if (rv === v.reaction.value) return
+
+          v.reaction.value = rv
+          break
+        case WatcherType.WHEN:
+          let wv: boolean
+
+          wv = v.when.predicate()
+          if (wv === v.when.value) return
+
+          v.when.value = wv
+          break
+      }
+
+      switch (v.type) {
         case WatcherType.AUTORUN:
         case WatcherType.REACTION:
         case WatcherType.WHEN:
-          if (WatcherObservable.match(v.observables, type, target, key, value)) {
+          if (WatcherObservable.match(v.observables, type, target)) {
             return
           }
 
@@ -56,10 +75,10 @@ export class WatcherManager {
 
       switch (v.type) {
         case WatcherType.REACTION:
-          v.reaction.effect(v.reaction.expression())
+          v.reaction.effect(v.reaction.value)
           break
         case WatcherType.WHEN:
-          v.when.predicate() && v.when.effect()
+          v.when.value && v.when.effect()
           break
       }
     })

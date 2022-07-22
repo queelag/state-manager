@@ -11,7 +11,8 @@ export class Dummy {
   static get WatcherReaction(): WatcherReaction<any> {
     return {
       effect: noop,
-      expression: noop
+      expression: noop,
+      value: undefined
     }
   }
 
@@ -24,7 +25,8 @@ export class Dummy {
   static get WatcherWhen(): WatcherWhen {
     return {
       effect: noop,
-      predicate: noop
+      predicate: noop,
+      value: false
     }
   }
 }

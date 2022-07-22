@@ -2,12 +2,12 @@ import { WatcherObservableType, WriteType } from '../definitions/enums'
 
 export class WatcherObservable<T extends object = object> {
   key: PropertyKey
-  receiver: T
+  receiver: any
   target: T
   type: WatcherObservableType
   value: any
 
-  constructor(key: PropertyKey, receiver: T, target: T, type: WatcherObservableType, value: any) {
+  constructor(key: PropertyKey, receiver: any, target: T, type: WatcherObservableType, value: any) {
     this.key = key
     this.receiver = receiver
     this.target = target
@@ -31,8 +31,8 @@ export class WatcherObservable<T extends object = object> {
     }
   }
 
-  static match(observables: WatcherObservable[], type: WriteType, target: object, key: PropertyKey, value: any): boolean {
-    let observable: WatcherObservable, kvm1: [any, any][], kvm2: [any, any][], kova1: any[], kova2: any[]
+  static match(observables: WatcherObservable[], type: WriteType, target: object): boolean {
+    let observable: WatcherObservable, kvm1: [any, any][], kvm2: [any, any][], kova1: any[], kova2: any[], a1: any, a2: any
 
     for (let i = 0; i < observables.length; i++) {
       observable = observables[i]
@@ -78,11 +78,14 @@ export class WatcherObservable<T extends object = object> {
           continue
         case WatcherObservableType.MAP_GET:
         case WatcherObservableType.PROXY_HANDLER_GET:
-          if (observable.value !== observable.get()) {
+          a1 = observable.value
+          a2 = observable.get()
+
+          if (a1 !== a2) {
             return false
           }
 
-          if (typeof value !== 'object') {
+          if (typeof a2 !== 'object') {
             continue
           }
 
@@ -93,7 +96,7 @@ export class WatcherObservable<T extends object = object> {
                 return false
               }
 
-              break
+              continue
           }
 
           continue
