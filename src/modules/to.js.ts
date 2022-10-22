@@ -1,5 +1,4 @@
-import { ModuleLogger } from '../loggers/module.logger'
-import { Administration } from './administration'
+import { isArray } from '@queelag/core'
 import { ObservableMap } from './observable.map'
 import { ObservableObject } from './observable.object'
 import { ObservableSet } from './observable.set'
@@ -17,19 +16,20 @@ import { ObservableSet } from './observable.set'
  * @category Module
  */
 export function toJS<T extends object>(target: T): T {
-  let clone: T
+  let clone: T = {} as T
 
-  clone = Array.isArray(target) ? ([...target] as T) : { ...target }
-  ModuleLogger.verbose('toJS', `The target has been cloned.`, target, clone)
+  if (isArray(target)) {
+    clone = [] as T
+  }
 
-  Object.keys(clone).forEach((k: string) => {
+  for (let key in target) {
     let property: any
 
-    property = Reflect.get(clone, k)
-    if (typeof property !== 'object' || property === null) return
+    property = Reflect.get(target, key)
 
     if (ObservableObject.isPropertyNotProxiable(property)) {
-      return
+      Reflect.set(clone, key, property)
+      continue
     }
 
     switch (true) {
@@ -37,27 +37,21 @@ export function toJS<T extends object>(target: T): T {
         let map: Map<any, any>
 
         map = ObservableMap.toJS(property)
-        Reflect.set(clone, k, map)
-
-        ModuleLogger.verbose('toJS', `The map has been cloned`, property, map)
+        Reflect.set(clone, key, map)
 
         break
       case property instanceof Set:
         let set: Set<any>
 
         set = ObservableSet.toJS(property)
-        Reflect.set(clone, k, set)
-
-        ModuleLogger.verbose('toJS', `The set has been cloned`, property, set)
+        Reflect.set(clone, key, set)
 
         break
       default:
-        Reflect.set(clone, k, toJS(property))
+        Reflect.set(clone, key, toJS(property))
         break
     }
-  })
-
-  Administration.delete(clone)
+  }
 
   return clone
 }

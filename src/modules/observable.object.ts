@@ -1,3 +1,4 @@
+import { isArray } from '@queelag/core'
 import { IS_PROXY_KEY } from '../definitions/constants'
 import { Administration } from './administration'
 import { ObservableMap } from './observable.map'
@@ -38,8 +39,7 @@ export class ObservableObject {
         let proxy: U
 
         if (ObservableObject.isPropertyProxy(property)) {
-          property = { ...property }
-          Administration.delete(property)
+          return true
         }
 
         proxy = new Proxy(property, handler)
@@ -63,25 +63,27 @@ export class ObservableObject {
   }
 
   static isPropertyProxiable(property: object): boolean {
-    if (!property?.toString) {
+    if (property === null) {
       return false
     }
 
+    if (typeof property !== 'object') {
+      return false
+    }
+
+    if (isArray(property)) {
+      return true
+    }
+
     switch (true) {
-      case property instanceof Array:
+      case property instanceof Map:
+      case property instanceof Set:
         return true
       default:
         break
     }
 
-    switch (property.toString()) {
-      case '[object Object]':
-      case '[object Map]':
-      case '[object Set]':
-        return true
-      default:
-        return false
-    }
+    return Object.getPrototypeOf(property) === Object.prototype
   }
 
   static isPropertyNotProxiable(property: object): boolean {
