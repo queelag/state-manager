@@ -2,7 +2,7 @@
   "author": "Dario Sechi",
   "devDependencies": {
     "@microsoft/api-extractor": "^7.24.0",
-    "@queelag/core": "^1.0.83",
+    "@queelag/core": "^1.1.8",
     "@rollup/plugin-typescript": "^8.3.2",
     "@types/cookie": "^0.5.1",
     "@types/jest": "^27.5.1",
@@ -35,5 +35,5 @@
     "deploy": "yarn test && yarn build && yarn tarball && yarn publish dist/*.tgz --access public"
   },
   "sideEffects": false,
-  "version": "1.0.8"
+  "version": "1.0.9"
 }
