@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest'
 import { reaction } from '../../src'
 import { WatcherReactionEffect, WatcherReactionExpression } from '../../src/definitions/types'
 import { getTestStore, Store } from '../get.test.store'
@@ -8,7 +9,7 @@ describe('reaction', () => {
 
     store = getTestStore()
     expression = () => store.number
-    effect = jest.fn()
+    effect = vi.fn()
 
     reaction(expression, effect)
 

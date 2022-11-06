@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { isObservable, toJS } from '../../src'
 import { getTestStore, Store } from '../get.test.store'
 

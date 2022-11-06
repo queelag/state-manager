@@ -2,37 +2,33 @@
   "author": "Dario Sechi",
   "devDependencies": {
     "@microsoft/api-extractor": "^7.24.0",
-    "@queelag/core": "^1.1.8",
+    "@queelag/core": "^1.1.12",
     "@rollup/plugin-typescript": "^8.3.2",
-    "@types/cookie": "^0.5.1",
-    "@types/jest": "^27.5.1",
+    "@vitest/coverage-c8": "^0.24.5",
+    "@vitest/ui": "^0.24.5",
     "dayjs": "^1.11.3",
-    "jest": "^28.1.0",
     "prettier": "^2.6.2",
     "rollup": "^2.73.0",
     "rollup-plugin-terser": "^7.0.2",
     "superstruct": "^0.16.0",
-    "ts-jest": "^28.0.2",
     "tslib": "^2.4.0",
     "typedoc": "^0.22.15",
-    "typescript": "4.6.4"
+    "typescript": "4.6.4",
+    "vitest": "^0.24.5"
   },
   "license": "MIT",
   "main": "index.cjs",
   "module": "index.js",
   "name": "@queelag/state-manager",
   "peerDependencies": {
-    "@queelag/core": ">= 1.0.0"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "@queelag/core": ">= 1.0.12"
   },
   "repository": "https://github.com/queelag/state-manager",
   "scripts": {
-    "test": "yarn jest --coverage",
+    "test": "yarn vitest run",
     "build": "rm -rf dist && yarn rollup -c && yarn api-extractor run --local",
-    "tarball": "yarn version && cp package.json dist/. && cd dist && yarn pack",
-    "deploy": "yarn test && yarn build && yarn tarball && yarn publish dist/*.tgz --access public"
+    "tarball": "yarn version && cp package.json README.md dist/. && cd dist && yarn pack",
+    "deploy": "yarn test && yarn build && yarn tarball && yarn publish dist/*.tgz"
   },
   "sideEffects": false,
   "version": "1.0.9"

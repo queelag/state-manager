@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, Mock, vi } from 'vitest'
 import { observe, watch, WatcherType } from '../../src'
 import { WatcherAutorunEffect, WatcherReactionEffect, WatcherWhenEffect } from '../../src/definitions/types'
 import { Administration } from '../../src/modules/administration'
@@ -33,10 +34,10 @@ describe('Administration', () => {
   })
 
   it('can be used through with', () => {
-    let fn: jest.Mock
+    let fn: Mock
 
     store = new Store()
-    fn = jest.fn()
+    fn = vi.fn()
 
     expect(Administration.with(store, fn)).toBeUndefined()
     expect(fn).not.toBeCalled()
@@ -56,9 +57,9 @@ describe('Administration', () => {
   it('handles every watcher when there are changes', () => {
     let ae: WatcherAutorunEffect, re: WatcherReactionEffect<number>, we: WatcherWhenEffect
 
-    ae = jest.fn()
-    re = jest.fn()
-    we = jest.fn()
+    ae = vi.fn()
+    re = vi.fn()
+    we = vi.fn()
 
     watch(WatcherType.AUTORUN, ae)
     watch(WatcherType.REACTION, () => store.number, re)

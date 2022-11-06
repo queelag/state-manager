@@ -1,4 +1,5 @@
 import { noop } from '@queelag/core'
+import { describe, expect, it } from 'vitest'
 import { watch, WatcherType } from '../../src'
 import { WatcherManager } from '../../src/modules/watcher.manager'
 import { getTestStore, Store } from '../get.test.store'

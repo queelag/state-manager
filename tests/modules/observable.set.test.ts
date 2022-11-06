@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest'
 import { ObservableSet } from '../../src/modules/observable.set'
 import { WatcherManager } from '../../src/modules/watcher.manager'
 
@@ -5,7 +6,7 @@ describe('ObservableSet', () => {
   it('makes a set observable', () => {
     let set: Set<any>
 
-    WatcherManager.onWrite = jest.fn()
+    WatcherManager.onWrite = vi.fn()
 
     set = new Set()
     ObservableSet.make({}, {}, '', set, {})

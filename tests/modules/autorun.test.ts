@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest'
 import { autorun } from '../../src'
 import { WatcherAutorunEffect } from '../../src/definitions/types'
 import { getTestStore, Store } from '../get.test.store'
@@ -7,7 +8,7 @@ describe('autorun', () => {
     let store: Store, effect: WatcherAutorunEffect
 
     store = getTestStore()
-    effect = jest.fn(() => store.number)
+    effect = vi.fn(() => store.number)
 
     autorun(effect)
 

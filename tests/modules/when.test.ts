@@ -1,3 +1,4 @@
+import { describe, expect, it, Mock, vi } from 'vitest'
 import { WatcherWhenEffect, when } from '../../src'
 import { getTestStore, Store } from '../get.test.store'
 
@@ -6,7 +7,7 @@ describe('when', () => {
     let store: Store, effect: WatcherWhenEffect
 
     store = getTestStore()
-    effect = jest.fn()
+    effect = vi.fn()
 
     when(() => store.boolean, effect)
 
@@ -15,12 +16,12 @@ describe('when', () => {
   })
 
   it('works as a promise if no effect is defined', async () => {
-    let store: Store, oncatch: jest.Mock, onfinally: jest.Mock, onthen: jest.Mock, promise: Promise<void>
+    let store: Store, oncatch: Mock, onfinally: Mock, onthen: Mock, promise: Promise<void>
 
     store = getTestStore()
-    oncatch = jest.fn()
-    onfinally = jest.fn()
-    onthen = jest.fn()
+    oncatch = vi.fn()
+    onfinally = vi.fn()
+    onthen = vi.fn()
 
     promise = when(() => store.boolean)
       .catch(oncatch)

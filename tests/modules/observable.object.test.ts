@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { ObservableObject } from '../../src/modules/observable.object'
 import { observe } from '../../src/modules/observe'
 

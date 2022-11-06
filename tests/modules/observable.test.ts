@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { IS_PROXY_KEY } from '../../src/definitions/constants'
 import { Administration } from '../../src/modules/administration'
 import { Observable } from '../../src/modules/observable'
@@ -8,7 +9,7 @@ describe('Observable', () => {
   let store: Store
 
   beforeEach(() => {
-    WatcherManager.onWrite = jest.fn()
+    WatcherManager.onWrite = vi.fn()
     store = new Store()
   })
 
@@ -88,7 +89,7 @@ describe('Observable', () => {
     expect(WatcherManager.onWrite).toBeCalledTimes(4)
 
     store = new Store()
-    WatcherManager.onWrite = jest.fn()
+    WatcherManager.onWrite = vi.fn()
 
     store.object = { a: 0, b: { c: 0 } }
     Observable.make(store, ['object'])
@@ -164,7 +165,7 @@ describe('Observable', () => {
     expect(WatcherManager.onWrite).toBeCalledTimes(5)
 
     store = new Store()
-    WatcherManager.onWrite = jest.fn()
+    WatcherManager.onWrite = vi.fn()
 
     store.array = [0, [0]]
     Observable.make(store, ['array'])

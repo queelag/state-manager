@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { Watcher } from '../../src/classes/watcher'
 import { WatcherType } from '../../src/definitions/enums'
 import { WatcherAutorunEffect, WatcherReactionEffect, WatcherReactionExpression, WatcherWhenEffect, WatcherWhenPredicate } from '../../src/definitions/types'
