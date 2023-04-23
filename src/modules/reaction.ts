@@ -6,7 +6,7 @@ import { watch } from './watch'
  * Runs an effect when any of the properties used inside the expression change.
  *
  * ```ts
- * import { observe, reaction } from '@queelag/state-manager'
+ * import { observe, reaction } from '@aracna/state-manager'
  *
  * const store = observe({ number: 0 })
  *

@@ -1,4 +1,4 @@
-import { tc } from '@queelag/core'
+import { tc } from '@aracna/core'
 import { Watcher } from '../classes/watcher'
 import { WatcherObservable } from '../classes/watcher.observable'
 import { WatcherType } from '../definitions/enums'
@@ -18,7 +18,7 @@ import { WatcherManager } from './watcher.manager'
  * Registers an AUTORUN watcher.
  *
  * ```ts
- * import { observe, watch, WatcherType } from '@queelag/state-manager'
+ * import { observe, watch, WatcherType } from '@aracna/state-manager'
  *
  * const store = observe({ number: 0 })
  *
@@ -37,7 +37,7 @@ export function watch(type: WatcherType.AUTORUN, effect: WatcherAutorunEffect): 
  * Registers a REACTION watcher.
  *
  * ```ts
- * import { observe, watch, WatcherType } from '@queelag/state-manager'
+ * import { observe, watch, WatcherType } from '@aracna/state-manager'
  *
  * const store = observe({ number: 0 })
  *
@@ -57,7 +57,7 @@ export function watch<U>(type: WatcherType.REACTION, expression: WatcherReaction
  * Registers a READ watcher.
  *
  * ```ts
- * import { observe, watch, WatcherType } from '@queelag/state-manager'
+ * import { observe, watch, WatcherType } from '@aracna/state-manager'
  *
  * const store = observe({ boolean: false })
  *
@@ -76,7 +76,7 @@ export function watch<T extends object>(type: WatcherType.READ, effect: WatcherR
  * Registers a WHEN watcher.
  *
  * ```ts
- * import { observe, watch, WatcherType } from '@queelag/state-manager'
+ * import { observe, watch, WatcherType } from '@aracna/state-manager'
  *
  * const store = observe({ boolean: false })
  *

@@ -1,4 +1,4 @@
-import { noop } from '@queelag/core'
+import { noop } from '@aracna/core'
 import { describe, expect, it } from 'vitest'
 import { watch, WatcherType } from '../../src'
 import { WatcherManager } from '../../src/modules/watcher.manager'

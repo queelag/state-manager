@@ -1,4 +1,4 @@
-import { isArray } from '@queelag/core'
+import { isArray } from '@aracna/core'
 import { ObservableMap } from './observable.map'
 import { ObservableObject } from './observable.object'
 import { ObservableSet } from './observable.set'
@@ -7,7 +7,7 @@ import { ObservableSet } from './observable.set'
  * Converts the target to a plain object.
  *
  * ```ts
- * import { observe, toJS } from '@queelag/state-manager'
+ * import { observe, toJS } from '@aracna/state-manager'
  *
  * const store = observe({ number: 0 })
  * console.log(toJS(store))

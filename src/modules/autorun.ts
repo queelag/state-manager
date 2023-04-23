@@ -6,7 +6,7 @@ import { watch } from './watch'
  * Runs an effect when any of the properties used inside of the effect change.
  *
  * ```ts
- * import { autorun, observe } from '@queelag/state-manager'
+ * import { autorun, observe } from '@aracna/state-manager'
  *
  * const store = observe({ number: 0 })
  *

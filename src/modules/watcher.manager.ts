@@ -1,4 +1,4 @@
-import { tc } from '@queelag/core'
+import { tc } from '@aracna/core'
 import { Watcher } from '../classes/watcher'
 import { WatcherObservable } from '../classes/watcher.observable'
 import { WatcherObservableType, WatcherType, WriteType } from '../definitions/enums'

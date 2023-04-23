@@ -4,7 +4,7 @@ import { IS_PROXY_KEY } from '../definitions/constants'
  * Checks if T is an observable.
  *
  * ```ts
- * import { isObservable, observe } from '@queelag/state-manager'
+ * import { isObservable, observe } from '@aracna/state-manager'
  *
  * const store = observe({ observed: {}, unobserved: {} }, ['observed'])
  *

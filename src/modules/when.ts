@@ -1,4 +1,4 @@
-import { DeferredPromise } from '@queelag/core'
+import { DeferredPromise } from '@aracna/core'
 import { WatcherType } from '../definitions/enums'
 import { WatcherDisposer, WatcherWhenEffect, WatcherWhenPredicate } from '../definitions/types'
 import { watch } from './watch'
@@ -7,7 +7,7 @@ import { watch } from './watch'
  * Runs an effect when the predicate is truthy.
  *
  * ```ts
- * import { observe, when } from '@queelag/state-manager'
+ * import { observe, when } from '@aracna/state-manager'
  *
  * const store = observe({ boolean: false })
  *
@@ -29,7 +29,7 @@ export function when(predicate: WatcherWhenPredicate, effect: WatcherWhenEffect)
  * Returns a Promise which will be resolved when the predicate is truthy.
  *
  * ```ts
- * import { observe, when } from '@queelag/state-manager'
+ * import { observe, when } from '@aracna/state-manager'
  *
  * const store = observe({ boolean: false })
  *

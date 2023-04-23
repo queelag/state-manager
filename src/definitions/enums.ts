@@ -5,7 +5,7 @@ export enum ComponentLifeCycle {
 }
 
 export enum LoggerName {
-  MODULE = 'QUEELAG_REACT_STATE_MANAGER_MODULE'
+  MODULE = 'ARACNA_REACT_STATE_MANAGER_MODULE'
 }
 
 export enum WatcherObservableType {

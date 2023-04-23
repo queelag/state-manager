@@ -1,4 +1,4 @@
-import { noop } from '@queelag/core'
+import { noop } from '@aracna/core'
 import { WatcherAutorun, WatcherReaction, WatcherRead, WatcherWhen } from '../definitions/interfaces'
 
 export class Dummy {

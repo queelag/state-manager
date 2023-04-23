@@ -7,7 +7,7 @@ import { Observable } from './observable'
  * Any other non plain object will be observed shallowly.
  *
  * ```ts
- * import { observe } from '@queelag/state-manager'
+ * import { observe } from '@aracna/state-manager'
  *
  * const store = observe({ number: 0 }, ['number'])
  * ```

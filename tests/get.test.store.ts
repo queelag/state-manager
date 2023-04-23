@@ -1,4 +1,4 @@
-import { Environment } from '@queelag/core'
+import { Environment } from '@aracna/core'
 import dayjs, { Dayjs } from 'dayjs'
 import { observe } from '../src'
 

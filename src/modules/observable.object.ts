@@ -1,4 +1,4 @@
-import { isArray } from '@queelag/core'
+import { isArray } from '@aracna/core'
 import { IS_PROXY_KEY } from '../definitions/constants'
 import { Administration } from './administration'
 import { ObservableMap } from './observable.map'
