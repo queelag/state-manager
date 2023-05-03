@@ -43,7 +43,7 @@ export class Administration<T extends object, K extends keyof T = keyof T> {
   }
 
   static get<T extends object>(target: T): Administration<T> | undefined {
-    return Reflect.get(target, ADMINISTRATION_SYMBOL)
+    return Reflect.get(target, ADMINISTRATION_SYMBOL) as Administration<T>
   }
 
   static isDefined<T extends object>(target: T): boolean {

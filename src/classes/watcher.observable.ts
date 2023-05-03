@@ -23,9 +23,19 @@ export class WatcherObservable<T extends object = object> {
       case WatcherObservableType.SET_ENTRIES:
       case WatcherObservableType.SET_KEYS:
       case WatcherObservableType.SET_VALUES:
-        return Reflect.get(this.target, this.key)()
+        let ekv: any
+
+        ekv = Reflect.get(this.target, this.key)
+        if (typeof ekv !== 'function') return
+
+        return ekv()
       case WatcherObservableType.MAP_GET:
-        return Reflect.get(this.target, 'get')(this.key)
+        let get
+
+        get = Reflect.get(this.target, 'get')
+        if (typeof get !== 'function') return
+
+        return get(this.key)
       case WatcherObservableType.PROXY_HANDLER_GET:
         return Reflect.get(this.target, this.key, this.receiver)
     }
