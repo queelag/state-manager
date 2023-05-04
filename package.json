@@ -1,32 +1,31 @@
 {
   "author": "Dario Sechi",
   "devDependencies": {
-    "@aracna/core": "^1.1.18",
-    "@microsoft/api-extractor": "^7.34.7",
-    "@rollup/plugin-typescript": "^11.1.0",
-    "@vitest/coverage-c8": "^0.30.1",
-    "@vitest/ui": "^0.30.1",
-    "dayjs": "^1.11.7",
-    "prettier": "^2.8.8",
-    "rollup": "^3.21.3",
-    "rollup-plugin-terser": "^7.0.2",
-    "superstruct": "^1.0.3",
-    "tslib": "^2.5.0",
-    "typedoc": "^0.24.6",
-    "typescript": "5.0.4",
-    "vitest": "^0.30.1"
+    "@aracna/core": "latest",
+    "@microsoft/api-extractor": "latest",
+    "@vitest/coverage-c8": "latest",
+    "@vitest/ui": "latest",
+    "dayjs": "latest",
+    "esbuild": "latest",
+    "glob": "latest",
+    "prettier": "latest",
+    "superstruct": "latest",
+    "tslib": "latest",
+    "typedoc": "latest",
+    "typescript": "latest",
+    "vitest": "latest"
   },
   "license": "MIT",
-  "main": "index.cjs",
+  "main": "index.cjs.js",
   "module": "index.js",
   "name": "@aracna/state-manager",
   "peerDependencies": {
-    "@aracna/core": ">= 1.0.18"
+    "@aracna/core": ">= 1.1.0"
   },
   "repository": "https://github.com/aracna/state-manager",
   "scripts": {
     "test": "yarn vitest run",
-    "build": "rm -rf dist && yarn rollup -c && yarn api-extractor run --local",
+    "build": "rm -rf dist && node esbuild.mjs && yarn tsc && yarn api-extractor run --local",
     "tarball": "yarn version && cp LICENSE package.json README.md dist/. && cd dist && yarn pack",
     "deploy": "yarn test && yarn build && yarn tarball && yarn publish dist/*.tgz"
   },
