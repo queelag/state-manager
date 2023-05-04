@@ -1,4 +1,4 @@
-import { IS_PROXY_KEY } from '../definitions/constants'
+import { IS_PROXY_KEY } from '../definitions/constants.js'
 
 /**
  * Checks if T is an observable.

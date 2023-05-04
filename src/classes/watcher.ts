@@ -1,5 +1,5 @@
-import { WatcherType } from '../definitions/enums'
-import { WatcherAutorun, WatcherReaction, WatcherRead, WatcherWhen } from '../definitions/interfaces'
+import { WatcherType } from '../definitions/enums.js'
+import { WatcherAutorun, WatcherReaction, WatcherRead, WatcherWhen } from '../definitions/interfaces.js'
 import {
   WatcherAutorunEffect,
   WatcherReactionEffect,
@@ -7,9 +7,9 @@ import {
   WatcherReadEffect,
   WatcherWhenEffect,
   WatcherWhenPredicate
-} from '../definitions/types'
-import { Dummy } from '../modules/dummy'
-import { WatcherObservable } from './watcher.observable'
+} from '../definitions/types.js'
+import { Dummy } from '../modules/dummy.js'
+import { WatcherObservable } from './watcher.observable.js'
 
 export class Watcher<T extends object = any, U = any> {
   autorun: WatcherAutorun

@@ -1,8 +1,8 @@
 import { isArray } from '@aracna/core'
-import { IS_PROXY_KEY } from '../definitions/constants'
-import { Administration } from './administration'
-import { ObservableMap } from './observable.map'
-import { ObservableSet } from './observable.set'
+import { IS_PROXY_KEY } from '../definitions/constants.js'
+import { Administration } from './administration.js'
+import { ObservableMap } from './observable.map.js'
+import { ObservableSet } from './observable.set.js'
 
 export class ObservableObject {
   static make<T extends object, U extends object, K extends keyof U = keyof U>(

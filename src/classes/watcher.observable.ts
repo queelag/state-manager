@@ -1,4 +1,4 @@
-import { WatcherObservableType, WriteType } from '../definitions/enums'
+import { WatcherObservableType, WriteType } from '../definitions/enums.js'
 
 export class WatcherObservable<T extends object = object> {
   key: PropertyKey

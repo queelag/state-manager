@@ -1,4 +1,4 @@
-import { ADMINISTRATION_SYMBOL } from '../definitions/constants'
+import { ADMINISTRATION_SYMBOL } from '../definitions/constants.js'
 
 export class Administration<T extends object, K extends keyof T = keyof T> {
   keys: K[]

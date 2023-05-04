@@ -1,10 +1,10 @@
-import { OBSERVABLE_COLLECTOR } from '../collectors/observable.collector'
-import { IS_PROXY_KEY } from '../definitions/constants'
-import { WatcherObservableType, WriteType } from '../definitions/enums'
-import { ModuleLogger } from '../loggers/module.logger'
-import { Administration } from './administration'
-import { ObservableObject } from './observable.object'
-import { WatcherManager } from './watcher.manager'
+import { OBSERVABLE_COLLECTOR } from '../collectors/observable.collector.js'
+import { IS_PROXY_KEY } from '../definitions/constants.js'
+import { WatcherObservableType, WriteType } from '../definitions/enums.js'
+import { ModuleLogger } from '../loggers/module.logger.js'
+import { Administration } from './administration.js'
+import { ObservableObject } from './observable.object.js'
+import { WatcherManager } from './watcher.manager.js'
 
 export class Observable {
   static make<T extends object, K extends keyof T>(target: T, keys: K[] = Object.keys(target) as K[]): T {

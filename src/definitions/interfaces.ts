@@ -1,4 +1,4 @@
-import { WatcherAutorunEffect, WatcherReactionEffect, WatcherReactionExpression, WatcherReadEffect, WatcherWhenEffect, WatcherWhenPredicate } from './types'
+import { WatcherAutorunEffect, WatcherReactionEffect, WatcherReactionExpression, WatcherReadEffect, WatcherWhenEffect, WatcherWhenPredicate } from './types.js'
 
 export interface WatcherAutorun {
   effect: WatcherAutorunEffect

@@ -1,6 +1,6 @@
-import { WatcherType } from '../definitions/enums'
-import { WatcherDisposer, WatcherReactionEffect, WatcherReactionExpression } from '../definitions/types'
-import { watch } from './watch'
+import { WatcherType } from '../definitions/enums.js'
+import { WatcherDisposer, WatcherReactionEffect, WatcherReactionExpression } from '../definitions/types.js'
+import { watch } from './watch.js'
 
 /**
  * Runs an effect when any of the properties used inside the expression change.

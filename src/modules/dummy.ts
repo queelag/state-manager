@@ -1,5 +1,5 @@
 import { noop } from '@aracna/core'
-import { WatcherAutorun, WatcherReaction, WatcherRead, WatcherWhen } from '../definitions/interfaces'
+import { WatcherAutorun, WatcherReaction, WatcherRead, WatcherWhen } from '../definitions/interfaces.js'
 
 export class Dummy {
   static get WatcherAutorun(): WatcherAutorun {

@@ -1,7 +1,7 @@
 import { isArray } from '@aracna/core'
-import { ObservableMap } from './observable.map'
-import { ObservableObject } from './observable.object'
-import { ObservableSet } from './observable.set'
+import { ObservableMap } from './observable.map.js'
+import { ObservableObject } from './observable.object.js'
+import { ObservableSet } from './observable.set.js'
 
 /**
  * Converts the target to a plain object.

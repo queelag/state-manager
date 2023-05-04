@@ -1,4 +1,4 @@
-import { WatcherObservable } from '../classes/watcher.observable'
+import { WatcherObservable } from '../classes/watcher.observable.js'
 
 export type WatcherAutorunEffect = () => any
 export type WatcherDisposer = () => void

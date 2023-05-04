@@ -1,4 +1,4 @@
-import { Observable } from './observable'
+import { Observable } from './observable.js'
 
 /**
  * Observes the target and lets you watch its properties changes.

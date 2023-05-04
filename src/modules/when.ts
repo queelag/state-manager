@@ -1,7 +1,7 @@
 import { DeferredPromise } from '@aracna/core'
-import { WatcherType } from '../definitions/enums'
-import { WatcherDisposer, WatcherWhenEffect, WatcherWhenPredicate } from '../definitions/types'
-import { watch } from './watch'
+import { WatcherType } from '../definitions/enums.js'
+import { WatcherDisposer, WatcherWhenEffect, WatcherWhenPredicate } from '../definitions/types.js'
+import { watch } from './watch.js'
 
 /**
  * Runs an effect when the predicate is truthy.

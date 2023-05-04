@@ -1,6 +1,6 @@
-import { WatcherType } from '../definitions/enums'
-import { WatcherAutorunEffect, WatcherDisposer } from '../definitions/types'
-import { watch } from './watch'
+import { WatcherType } from '../definitions/enums.js'
+import { WatcherAutorunEffect, WatcherDisposer } from '../definitions/types.js'
+import { watch } from './watch.js'
 
 /**
  * Runs an effect when any of the properties used inside of the effect change.
