@@ -1,7 +1,7 @@
 import { IS_PROXY_KEY } from '../definitions/constants.js'
 import { WatcherObservableType, WriteType } from '../definitions/enums.js'
 import { Administration } from './administration.js'
-import { WatcherManager } from './watcher.manager.js'
+import { WatcherManager } from './watcher-manager.js'
 
 type MapClear = () => void
 type MapDelete<K> = (key: K) => boolean

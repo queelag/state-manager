@@ -1,6 +1,6 @@
 import { tc } from '@aracna/core'
+import { WatcherObservable } from '../classes/watcher-observable.js'
 import { Watcher } from '../classes/watcher.js'
-import { WatcherObservable } from '../classes/watcher.observable.js'
 import { WatcherType } from '../definitions/enums.js'
 import {
   WatcherAutorunEffect,
@@ -11,8 +11,8 @@ import {
   WatcherWhenEffect,
   WatcherWhenPredicate
 } from '../definitions/types.js'
-import { ModuleLogger } from '../loggers/module.logger.js'
-import { WatcherManager } from './watcher.manager.js'
+import { ModuleLogger } from '../loggers/module-logger.js'
+import { WatcherManager } from '../modules/watcher-manager.js'
 
 /**
  * Registers an AUTORUN watcher.

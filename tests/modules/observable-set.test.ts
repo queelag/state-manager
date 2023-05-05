@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import { ObservableSet } from '../../src/modules/observable.set'
-import { WatcherManager } from '../../src/modules/watcher.manager'
+import { ObservableSet } from '../../src/modules/observable-set'
+import { WatcherManager } from '../../src/modules/watcher-manager'
 
 describe('ObservableSet', () => {
   it('makes a set observable', () => {

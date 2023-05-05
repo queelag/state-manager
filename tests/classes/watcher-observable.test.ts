@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { WatcherObservable } from '../../src/classes/watcher.observable'
+import { WatcherObservable } from '../../src/classes/watcher-observable'
 import { WatcherObservableType, WriteType } from '../../src/definitions/enums'
-import { getTestStore, Store } from '../get.test.store'
+import { Store, getTestStore } from '../get.test.store'
 
 describe('WatcherObservable', () => {
   let store: Store, observables: WatcherObservable[]

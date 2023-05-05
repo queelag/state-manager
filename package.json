@@ -1,25 +1,27 @@
 {
   "author": "Dario Sechi",
   "devDependencies": {
-    "@aracna/core": "latest",
-    "@microsoft/api-extractor": "latest",
-    "@vitest/coverage-c8": "latest",
-    "@vitest/ui": "latest",
-    "dayjs": "latest",
-    "esbuild": "latest",
-    "glob": "latest",
-    "prettier": "latest",
-    "superstruct": "latest",
-    "tslib": "latest",
-    "typedoc": "latest",
-    "typescript": "latest",
-    "vitest": "latest"
+    "@aracna/core": "^1.1.25",
+    "@microsoft/api-extractor": "^7.34.8",
+    "@vitest/coverage-c8": "^0.31.0",
+    "@vitest/ui": "^0.31.0",
+    "dayjs": "^1.11.7",
+    "esbuild": "^0.17.18",
+    "glob": "^10.2.2",
+    "prettier": "^2.8.8",
+    "superstruct": "^1.0.3",
+    "tslib": "^2.5.0",
+    "typedoc": "^0.24.6",
+    "typescript": "^5.0.4",
+    "vitest": "^0.31.0"
   },
   "exports": {
-    "import": "./index.js",
-    "require": {
-      "default": "./index.cjs.js",
-      "types": "./index.d.ts"
+    ".": {
+      "import": "./index.js",
+      "require": {
+        "default": "./index.cjs.js",
+        "types": "./index.d.ts"
+      }
     }
   },
   "license": "MIT",

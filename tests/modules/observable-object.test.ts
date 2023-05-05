@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { ObservableObject } from '../../src/modules/observable.object'
-import { observe } from '../../src/modules/observe'
+import { observe } from '../../src/functions/observe'
+import { ObservableObject } from '../../src/modules/observable-object'
 
 describe('ObservableObject', () => {
   it('detects if a property is a proxy', () => {

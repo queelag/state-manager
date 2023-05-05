@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { IS_PROXY_KEY } from '../../src/definitions/constants'
 import { Administration } from '../../src/modules/administration'
 import { Observable } from '../../src/modules/observable'
-import { WatcherManager } from '../../src/modules/watcher.manager'
+import { WatcherManager } from '../../src/modules/watcher-manager'
 import { Store } from '../get.test.store'
 
 describe('Observable', () => {

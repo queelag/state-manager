@@ -9,7 +9,7 @@ import {
   WatcherWhenPredicate
 } from '../definitions/types.js'
 import { Dummy } from '../modules/dummy.js'
-import { WatcherObservable } from './watcher.observable.js'
+import { WatcherObservable } from './watcher-observable.js'
 
 export class Watcher<T extends object = any, U = any> {
   autorun: WatcherAutorun

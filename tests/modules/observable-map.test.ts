@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it, vi } from 'vitest'
-import { ObservableMap } from '../../src/modules/observable.map'
-import { WatcherManager } from '../../src/modules/watcher.manager'
+import { ObservableMap } from '../../src/modules/observable-map'
+import { WatcherManager } from '../../src/modules/watcher-manager'
 
 describe('ObservableMap', () => {
   beforeAll(() => {

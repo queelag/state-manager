@@ -1,8 +1,8 @@
 import { tc } from '@aracna/core'
+import { WatcherObservable } from '../classes/watcher-observable.js'
 import { Watcher } from '../classes/watcher.js'
-import { WatcherObservable } from '../classes/watcher.observable.js'
 import { WatcherObservableType, WatcherType, WriteType } from '../definitions/enums.js'
-import { ModuleLogger } from '../loggers/module.logger.js'
+import { ModuleLogger } from '../loggers/module-logger.js'
 
 export class WatcherManager {
   static watchers: Watcher[] = []
