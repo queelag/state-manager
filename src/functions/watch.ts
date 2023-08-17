@@ -14,83 +14,9 @@ import {
 import { ModuleLogger } from '../loggers/module-logger.js'
 import { WatcherManager } from '../modules/watcher-manager.js'
 
-/**
- * Registers an AUTORUN watcher.
- *
- * ```ts
- * import { observe, watch, WatcherType } from '@aracna/state-manager'
- *
- * const store = observe({ number: 0 })
- *
- * watch(
- *   WatcherType.AUTORUN,
- *   () => console.log(store.number)
- * )
- *
- * store.number++
- * ```
- *
- * @category Module
- */
 export function watch(type: WatcherType.AUTORUN, effect: WatcherAutorunEffect): WatcherDisposer
-/**
- * Registers a REACTION watcher.
- *
- * ```ts
- * import { observe, watch, WatcherType } from '@aracna/state-manager'
- *
- * const store = observe({ number: 0 })
- *
- * watch(
- *   WatcherType.REACTION,
- *   () => store.number,
- *   () => console.log(store.number)
- * )
- *
- * store.number++
- * ```
- *
- * @category Module
- */
 export function watch<U>(type: WatcherType.REACTION, expression: WatcherReactionExpression<U>, effect: WatcherReactionEffect<U>): WatcherDisposer
-/**
- * Registers a READ watcher.
- *
- * ```ts
- * import { observe, watch, WatcherType } from '@aracna/state-manager'
- *
- * const store = observe({ boolean: false })
- *
- * watch(
- *   WatcherType.READ,
- *   (target: object, key: PropertyKey, value: any) => console.log(target, key, value)
- * )
- *
- * console.log(store.boolean)
- * ```
- *
- * @category Module
- */
 export function watch<T extends object>(type: WatcherType.READ, effect: WatcherReadEffect<T>): WatcherDisposer
-/**
- * Registers a WHEN watcher.
- *
- * ```ts
- * import { observe, watch, WatcherType } from '@aracna/state-manager'
- *
- * const store = observe({ boolean: false })
- *
- * watch(
- *   WatcherType.WHEN,
- *   () => console.log(store.boolean)
- * )
- *
- * store.boolean = true
- * store.boolean = false
- * ```
- *
- * @category Module
- */
 export function watch(type: WatcherType.WHEN, predicate: WatcherWhenPredicate, effect: WatcherWhenEffect): WatcherDisposer
 export function watch<T extends object, U>(type: WatcherType, ...args: any): WatcherDisposer {
   let watcher: Watcher<T, U> | undefined

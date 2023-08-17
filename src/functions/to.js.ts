@@ -3,18 +3,6 @@ import { ObservableMap } from '../modules/observable-map.js'
 import { ObservableObject } from '../modules/observable-object.js'
 import { ObservableSet } from '../modules/observable-set.js'
 
-/**
- * Converts the target to a plain object.
- *
- * ```ts
- * import { observe, toJS } from '@aracna/state-manager'
- *
- * const store = observe({ number: 0 })
- * console.log(toJS(store))
- * ```
- *
- * @category Module
- */
 export function toJS<T extends object>(target: T): T {
   let clone: T = {} as T
 
