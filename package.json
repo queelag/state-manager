@@ -1,19 +1,19 @@
 {
   "author": "Dario Sechi",
   "devDependencies": {
-    "@aracna/core": "^1.1.25",
-    "@microsoft/api-extractor": "^7.34.8",
-    "@vitest/coverage-c8": "^0.31.0",
-    "@vitest/ui": "^0.31.0",
-    "dayjs": "^1.11.7",
-    "esbuild": "^0.17.18",
-    "glob": "^10.2.2",
-    "prettier": "^2.8.8",
+    "@aracna/core": "^1.1.41",
+    "@microsoft/api-extractor": "^7.36.4",
+    "@vitest/coverage-c8": "^0.33.0",
+    "@vitest/ui": "^0.34.2",
+    "dayjs": "^1.11.9",
+    "esbuild": "^0.19.2",
+    "glob": "^10.3.3",
+    "prettier": "^3.0.2",
     "superstruct": "^1.0.3",
-    "tslib": "^2.5.0",
-    "typedoc": "^0.24.6",
-    "typescript": "^5.0.4",
-    "vitest": "^0.31.0"
+    "tslib": "^2.6.2",
+    "typedoc": "^0.24.8",
+    "typescript": "^5.1.6",
+    "vitest": "^0.34.2"
   },
   "exports": {
     "import": "./index.js",
