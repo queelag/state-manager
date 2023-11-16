@@ -1,19 +1,19 @@
 {
   "author": "Dario Sechi",
   "devDependencies": {
-    "@aracna/core": "^1.1.41",
-    "@microsoft/api-extractor": "^7.36.4",
-    "@vitest/coverage-v8": "^0.34.2",
-    "@vitest/ui": "^0.34.2",
-    "dayjs": "^1.11.9",
-    "esbuild": "^0.19.2",
-    "glob": "^10.3.3",
-    "prettier": "^3.0.2",
+    "@aracna/core": "^1.1.59",
+    "@microsoft/api-extractor": "^7.38.3",
+    "@vitest/coverage-v8": "^0.34.6",
+    "@vitest/ui": "^0.34.6",
+    "dayjs": "^1.11.10",
+    "esbuild": "^0.19.5",
+    "glob": "^10.3.10",
+    "prettier": "^3.1.0",
     "superstruct": "^1.0.3",
     "tslib": "^2.6.2",
     "typedoc": "^0.24.8",
-    "typescript": "^5.1.6",
-    "vitest": "^0.34.2"
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
   },
   "exports": {
     "import": "./index.js",
@@ -27,12 +27,14 @@
   "peerDependencies": {
     "@aracna/core": ">= 1.1.0"
   },
+  "publishConfig": {
+    "directory": "dist"
+  },
   "repository": "https://github.com/aracna/state-manager",
   "scripts": {
-    "test": "yarn vitest run",
-    "build": "rm -rf dist && node esbuild.mjs && yarn tsc && yarn api-extractor run --local",
-    "tarball": "yarn version && cp LICENSE package.json README.md dist/. && cd dist && yarn pack",
-    "deploy": "yarn test && yarn build && yarn tarball && yarn publish dist/*.tgz"
+    "build": "rm -rf dist && node esbuild.mjs && pnpm tsc && pnpm api-extractor run --local",
+    "prepublish": "pnpm test && pnpm build && pnpm version patch && cp LICENSE package.json README.md dist",
+    "test": "vitest run"
   },
   "sideEffects": false,
   "type": "module",
