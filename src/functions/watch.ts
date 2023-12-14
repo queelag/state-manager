@@ -1,4 +1,5 @@
 import { tc } from '@aracna/core'
+import { WatcherManager } from '../classes/watcher-manager.js'
 import { WatcherObservable } from '../classes/watcher-observable.js'
 import { Watcher } from '../classes/watcher.js'
 import { WatcherType } from '../definitions/enums.js'
@@ -12,7 +13,6 @@ import {
   WatcherWhenPredicate
 } from '../definitions/types.js'
 import { ModuleLogger } from '../loggers/module-logger.js'
-import { WatcherManager } from '../modules/watcher-manager.js'
 
 export function watch(type: WatcherType.AUTORUN, effect: WatcherAutorunEffect): WatcherDisposer
 export function watch<U>(type: WatcherType.REACTION, expression: WatcherReactionExpression<U>, effect: WatcherReactionEffect<U>): WatcherDisposer

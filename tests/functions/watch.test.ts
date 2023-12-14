@@ -1,7 +1,7 @@
 import { noop } from '@aracna/core'
 import { describe, expect, it } from 'vitest'
 import { WatcherType, watch } from '../../src'
-import { WatcherManager } from '../../src/modules/watcher-manager'
+import { WatcherManager } from '../../src/classes/watcher-manager'
 import { Store, getTestStore } from '../get.test.store'
 
 describe('watch', () => {

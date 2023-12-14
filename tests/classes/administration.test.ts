@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest'
 import { observe, watch, WatcherType } from '../../src'
+import { Administration } from '../../src/classes/administration'
 import { WatcherAutorunEffect, WatcherReactionEffect, WatcherWhenEffect } from '../../src/definitions/types'
-import { Administration } from '../../src/modules/administration'
 import { getTestStore, Store } from '../get.test.store'
 
 describe('Administration', () => {

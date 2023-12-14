@@ -1,7 +1,7 @@
 import { isArray } from '@aracna/core'
-import { ObservableMap } from '../modules/observable-map.js'
-import { ObservableObject } from '../modules/observable-object.js'
-import { ObservableSet } from '../modules/observable-set.js'
+import { ObservableMap } from '../classes/observable-map.js'
+import { ObservableObject } from '../classes/observable-object.js'
+import { ObservableSet } from '../classes/observable-set.js'
 
 export function toJS<T extends object>(target: T): T {
   let clone: T = {} as T

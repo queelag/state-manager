@@ -1,3 +1,4 @@
+import { noop } from '@aracna/core'
 import { WatcherType } from '../definitions/enums.js'
 import { WatcherAutorun, WatcherReaction, WatcherRead, WatcherWhen } from '../definitions/interfaces.js'
 import {
@@ -8,7 +9,6 @@ import {
   WatcherWhenEffect,
   WatcherWhenPredicate
 } from '../definitions/types.js'
-import { Dummy } from '../modules/dummy.js'
 import { WatcherObservable } from './watcher-observable.js'
 
 export class Watcher<T extends object = any, U = any> {
@@ -24,12 +24,12 @@ export class Watcher<T extends object = any, U = any> {
   constructor(type: WatcherType.READ, effect: WatcherReadEffect<T>)
   constructor(type: WatcherType.WHEN, effect: WatcherWhenEffect, predicate: WatcherWhenPredicate)
   constructor(type: WatcherType, ...args: any) {
-    this.autorun = Dummy.WatcherAutorun
+    this.autorun = { effect: noop }
     this.observables = []
-    this.reaction = Dummy.WatcherReaction
-    this.read = Dummy.WatcherRead
+    this.reaction = { effect: noop, expression: noop, value: undefined as U }
+    this.read = { effect: noop }
     this.type = type
-    this.when = Dummy.WatcherWhen
+    this.when = { effect: noop, predicate: noop, value: false }
 
     switch (type) {
       case WatcherType.AUTORUN:
