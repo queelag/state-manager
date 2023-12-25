@@ -35,7 +35,7 @@ export class ObservableObject {
         return ObservableMap.make(root, target, key, property, receiver)
       case property instanceof Set:
         return ObservableSet.make(root, target, key, property, receiver)
-      default:
+      default: {
         let proxy: U
 
         if (ObservableObject.isPropertyProxy(property)) {
@@ -46,6 +46,7 @@ export class ObservableObject {
         Administration.define(property, Object.keys(property), proxy, target, root)
 
         return Reflect.set(target, key, proxy, receiver)
+      }
     }
   }
 

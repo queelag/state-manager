@@ -9,7 +9,7 @@ export function when(predicate: WatcherWhenPredicate, ...args: any): any {
   let effect: WatcherWhenEffect
 
   switch (args.length) {
-    case 0:
+    case 0: {
       let promise: DeferredPromise<void>, disposer: WatcherDisposer
 
       effect = () => {
@@ -21,6 +21,7 @@ export function when(predicate: WatcherWhenPredicate, ...args: any): any {
       disposer = watch(WatcherType.WHEN, predicate, effect)
 
       return promise.instance
+    }
     case 1:
       return watch(WatcherType.WHEN, predicate, args[0])
   }

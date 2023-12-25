@@ -24,7 +24,7 @@ export class WatcherManager {
   static onWrite(type: WriteType, target: object, key: PropertyKey, value: any): void {
     WatcherManager.watchers.forEach((v: Watcher) => {
       switch (v.type) {
-        case WatcherType.REACTION:
+        case WatcherType.REACTION: {
           let rv: any
 
           rv = v.reaction.expression()
@@ -32,7 +32,8 @@ export class WatcherManager {
 
           v.reaction.value = rv
           break
-        case WatcherType.WHEN:
+        }
+        case WatcherType.WHEN: {
           let wv: boolean
 
           wv = v.when.predicate()
@@ -40,6 +41,7 @@ export class WatcherManager {
 
           v.when.value = wv
           break
+        }
       }
 
       switch (v.type) {
@@ -56,7 +58,7 @@ export class WatcherManager {
       switch (v.type) {
         case WatcherType.AUTORUN:
         case WatcherType.REACTION:
-        case WatcherType.WHEN:
+        case WatcherType.WHEN: {
           let read: Watcher
 
           read = new Watcher(WatcherType.READ, (observable: WatcherObservable) => {
@@ -71,6 +73,7 @@ export class WatcherManager {
           tc(() => v.when.predicate())
 
           WatcherManager.dispose(read)
+        }
       }
 
       switch (v.type) {

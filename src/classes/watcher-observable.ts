@@ -22,31 +22,31 @@ export class WatcherObservable<T extends object = object> {
       case WatcherObservableType.MAP_VALUES:
       case WatcherObservableType.SET_ENTRIES:
       case WatcherObservableType.SET_KEYS:
-      case WatcherObservableType.SET_VALUES:
+      case WatcherObservableType.SET_VALUES: {
         let ekv: any
 
         ekv = Reflect.get(this.target, this.key)
         if (typeof ekv !== 'function') return
 
         return ekv()
-      case WatcherObservableType.MAP_GET:
-        let get
+      }
+      case WatcherObservableType.MAP_GET: {
+        let get: any
 
         get = Reflect.get(this.target, 'get')
         if (typeof get !== 'function') return
 
         return get(this.key)
+      }
       case WatcherObservableType.PROXY_HANDLER_GET:
         return Reflect.get(this.target, this.key, this.receiver)
     }
   }
 
   static match(observables: WatcherObservable[], type: WriteType, target: object): boolean {
-    let observable: WatcherObservable, kvm1: [any, any][], kvm2: [any, any][], kova1: any[], kova2: any[], a1: any, a2: any
+    let kvm1: [any, any][], kvm2: [any, any][], kova1: any[], kova2: any[], a1: any, a2: any
 
-    for (let i = 0; i < observables.length; i++) {
-      observable = observables[i]
-
+    for (let observable of observables) {
       switch (observable.type) {
         case WatcherObservableType.MAP_ENTRIES:
         case WatcherObservableType.SET_ENTRIES:

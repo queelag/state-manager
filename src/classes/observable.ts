@@ -97,17 +97,14 @@ export class Observable {
           return true
         }
 
-        switch (typeof value) {
-          case 'object':
-            set = ObservableObject.make<T, U>(root, Observable.getProxyHandler(root), target, p as keyof U, value, receiver)
-            if (!set) return false
+        if (typeof value === 'object') {
+          set = ObservableObject.make<T, U>(root, Observable.getProxyHandler(root), target, p as keyof U, value, receiver)
+          if (!set) return false
+        }
 
-            break
-          default:
-            set = Reflect.set(target, p, value, receiver)
-            if (!set) return false
-
-            break
+        if (typeof value !== 'object') {
+          set = Reflect.set(target, p, value, receiver)
+          if (!set) return false
         }
 
         ModuleLogger.verbose('ProxyObservable', 'getHandler', 'set', `The value has been set.`, [target, p, value])

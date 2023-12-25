@@ -53,7 +53,7 @@ export function watch<T extends object, U>(type: WatcherType, ...args: any): Wat
   switch (type) {
     case WatcherType.AUTORUN:
     case WatcherType.REACTION:
-    case WatcherType.WHEN:
+    case WatcherType.WHEN: {
       let rd: WatcherDisposer
 
       rd = watch(WatcherType.READ, (observable: WatcherObservable<T>) => {
@@ -65,6 +65,9 @@ export function watch<T extends object, U>(type: WatcherType, ...args: any): Wat
       tc(() => watcher?.when.predicate())
 
       rd()
+
+      break
+    }
   }
 
   WatcherManager.watchers.push(watcher)

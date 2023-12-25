@@ -27,13 +27,12 @@ export class Administration<T extends object, K extends keyof T = keyof T> {
   }
 
   static update<T extends object>(target: T, parent: object = {}, root: object = {}): T {
-    let administration: Administration<T> | undefined
+    let administration: Administration<T> | undefined = Administration.get(target)
 
-    administration = Administration.get(target)
-    if (!administration) return target
-
-    administration.parent = parent
-    administration.root = root
+    if (administration) {
+      administration.parent = parent
+      administration.root = root
+    }
 
     return target
   }

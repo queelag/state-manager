@@ -21,20 +21,22 @@ export function toJS<T extends object>(target: T): T {
     }
 
     switch (true) {
-      case property instanceof Map:
+      case property instanceof Map: {
         let map: Map<any, any>
 
         map = ObservableMap.toJS(property)
         Reflect.set(clone, key, map)
 
         break
-      case property instanceof Set:
+      }
+      case property instanceof Set: {
         let set: Set<any>
 
         set = ObservableSet.toJS(property)
         Reflect.set(clone, key, set)
 
         break
+      }
       default:
         Reflect.set(clone, key, toJS(property))
         break
