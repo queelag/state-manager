@@ -1,4 +1,3 @@
-import { OBSERVABLE_COLLECTOR } from '../collectors/observable-collector.js'
 import { IS_PROXY_KEY } from '../definitions/constants.js'
 import { WatcherObservableType, WriteType } from '../definitions/enums.js'
 import { ModuleLogger } from '../loggers/module-logger.js'
@@ -30,9 +29,6 @@ export class Observable {
 
     Administration.define(target, keys, proxy)
     ModuleLogger.verbose('Observable', 'make', `The administration class has been set.`, Administration.get(target))
-
-    OBSERVABLE_COLLECTOR.push(target)
-    ModuleLogger.verbose('Observable', 'make', `The target has been pushed to the observable collector.`)
 
     return target
   }

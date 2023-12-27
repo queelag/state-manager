@@ -3,6 +3,11 @@ import { ObservableMap } from '../classes/observable-map.js'
 import { ObservableObject } from '../classes/observable-object.js'
 import { ObservableSet } from '../classes/observable-set.js'
 
+/**
+ * Returns a plain object from an observable object.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/state-manager/functions/to-js)
+ */
 export function toJS<T extends object>(target: T): T {
   let clone: T = {} as T
 

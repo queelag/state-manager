@@ -1,15 +1,20 @@
 import { ADMINISTRATION_SYMBOL, IS_PROXY_KEY } from '../definitions/constants.js'
 
-export function isObservable<T extends object>(target: T): boolean {
-  if (typeof target !== 'object' || target === null) {
+/**
+ * Checks if an object is an observable.
+ *
+ * [Aracna Reference](https://aracna.dariosechi.it/state-manager/functions/is-observable)
+ */
+export function isObservable<T extends object>(object: T): boolean {
+  if (typeof object !== 'object' || object === null) {
     return false
   }
 
-  if (Reflect.has(target, ADMINISTRATION_SYMBOL)) {
+  if (Reflect.has(object, ADMINISTRATION_SYMBOL)) {
     return true
   }
 
-  if (Reflect.get(target, IS_PROXY_KEY) === true) {
+  if (Reflect.get(object, IS_PROXY_KEY) === true) {
     return true
   }
 
