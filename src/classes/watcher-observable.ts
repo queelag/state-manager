@@ -1,4 +1,4 @@
-import { WatcherObservableType, WriteType } from '../definitions/enums.js'
+import type { WatcherObservableType, WatcherWriteType } from '../definitions/types.js'
 
 export class WatcherObservable<T extends object = object> {
   key: PropertyKey
@@ -17,12 +17,12 @@ export class WatcherObservable<T extends object = object> {
 
   get(): any {
     switch (this.type) {
-      case WatcherObservableType.MAP_ENTRIES:
-      case WatcherObservableType.MAP_KEYS:
-      case WatcherObservableType.MAP_VALUES:
-      case WatcherObservableType.SET_ENTRIES:
-      case WatcherObservableType.SET_KEYS:
-      case WatcherObservableType.SET_VALUES: {
+      case 'map-entries':
+      case 'map-keys':
+      case 'map-values':
+      case 'set-entries':
+      case 'set-keys':
+      case 'set-values': {
         let ekv: any
 
         ekv = Reflect.get(this.target, this.key)
@@ -30,7 +30,7 @@ export class WatcherObservable<T extends object = object> {
 
         return ekv()
       }
-      case WatcherObservableType.MAP_GET: {
+      case 'map-get': {
         let get: any
 
         get = Reflect.get(this.target, 'get')
@@ -38,18 +38,18 @@ export class WatcherObservable<T extends object = object> {
 
         return get(this.key)
       }
-      case WatcherObservableType.PROXY_HANDLER_GET:
+      case 'proxy-handler-get':
         return Reflect.get(this.target, this.key, this.receiver)
     }
   }
 
-  static match(observables: WatcherObservable[], type: WriteType, target: object): boolean {
+  static match(observables: WatcherObservable[], type: WatcherWriteType, target: object): boolean {
     let kvm1: [any, any][], kvm2: [any, any][], kova1: any[], kova2: any[], a1: any, a2: any
 
     for (let observable of observables) {
       switch (observable.type) {
-        case WatcherObservableType.MAP_ENTRIES:
-        case WatcherObservableType.SET_ENTRIES:
+        case 'map-entries':
+        case 'set-entries':
           kvm1 = [...observable.value]
           kvm2 = [...observable.get()]
 
@@ -68,10 +68,10 @@ export class WatcherObservable<T extends object = object> {
           }
 
           continue
-        case WatcherObservableType.MAP_KEYS:
-        case WatcherObservableType.MAP_VALUES:
-        case WatcherObservableType.SET_KEYS:
-        case WatcherObservableType.SET_VALUES:
+        case 'map-keys':
+        case 'map-values':
+        case 'set-keys':
+        case 'set-values':
           kova1 = [...observable.value]
           kova2 = [...observable.get()]
 
@@ -86,8 +86,8 @@ export class WatcherObservable<T extends object = object> {
           }
 
           continue
-        case WatcherObservableType.MAP_GET:
-        case WatcherObservableType.PROXY_HANDLER_GET:
+        case 'map-get':
+        case 'proxy-handler-get':
           a1 = observable.value
           a2 = observable.get()
 
@@ -100,8 +100,8 @@ export class WatcherObservable<T extends object = object> {
           }
 
           switch (type) {
-            case WriteType.PROXY_HANDLER_DELETE_PROPERTY:
-            case WriteType.PROXY_HANDLER_SET:
+            case 'proxy-handler-delete-property':
+            case 'proxy-handler-set':
               if (observable.target === target) {
                 return false
               }

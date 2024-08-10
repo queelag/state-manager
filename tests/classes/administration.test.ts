@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest'
-import { observe, watch, WatcherType } from '../../src'
+import { observe, watch } from '../../src'
 import { Administration } from '../../src/classes/administration'
 import { WatcherAutorunEffect, WatcherReactionEffect, WatcherWhenEffect } from '../../src/definitions/types'
 import { getTestStore, Store } from '../get.test.store'
@@ -61,9 +61,9 @@ describe('Administration', () => {
     re = vi.fn()
     we = vi.fn()
 
-    watch(WatcherType.AUTORUN, ae)
-    watch(WatcherType.REACTION, () => store.number, re)
-    watch(WatcherType.WHEN, () => store.boolean, we)
+    watch('autorun', ae)
+    watch('reaction', () => store.number, re)
+    watch('when', () => store.boolean, we)
 
     store.boolean = true
 

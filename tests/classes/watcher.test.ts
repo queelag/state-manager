@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
 import { Watcher } from '../../src/classes//watcher'
-import { WatcherType } from '../../src/definitions/enums'
 import { WatcherAutorunEffect, WatcherReactionEffect, WatcherReactionExpression, WatcherWhenEffect, WatcherWhenPredicate } from '../../src/definitions/types'
 
 describe('Watcher', () => {
@@ -8,10 +7,10 @@ describe('Watcher', () => {
     let effect: WatcherAutorunEffect, watcher: Watcher
 
     effect = () => undefined
-    watcher = new Watcher(WatcherType.AUTORUN, effect)
+    watcher = new Watcher('autorun', effect)
 
     expect(watcher.autorun.effect).toBe(effect)
-    expect(watcher.type).toBe(WatcherType.AUTORUN)
+    expect(watcher.type).toBe('autorun')
   })
 
   it('constructs a reaction', () => {
@@ -19,12 +18,12 @@ describe('Watcher', () => {
 
     effect = () => undefined
     expression = () => 0
-    watcher = new Watcher(WatcherType.REACTION, effect, expression)
+    watcher = new Watcher('reaction', effect, expression)
 
     expect(watcher.reaction.effect).toBe(effect)
     expect(watcher.reaction.expression).toBe(expression)
     // expect(watcher.reaction.value).toBe(0)
-    expect(watcher.type).toBe(WatcherType.REACTION)
+    expect(watcher.type).toBe('reaction')
   })
 
   it('constructs a when', () => {
@@ -32,11 +31,11 @@ describe('Watcher', () => {
 
     effect = () => undefined
     predicate = () => true
-    watcher = new Watcher(WatcherType.WHEN, effect, predicate)
+    watcher = new Watcher('when', effect, predicate)
 
     expect(watcher.when.effect).toBe(effect)
     expect(watcher.when.predicate).toBe(predicate)
     // expect(watcher.when.value).toBe(true)
-    expect(watcher.type).toBe(WatcherType.WHEN)
+    expect(watcher.type).toBe('when')
   })
 })

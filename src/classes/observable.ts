@@ -1,5 +1,4 @@
 import { IS_PROXY_KEY } from '../definitions/constants.js'
-import { WatcherObservableType, WriteType } from '../definitions/enums.js'
 import { ModuleLogger } from '../loggers/module-logger.js'
 import { Administration } from './administration.js'
 import { ObservableObject } from './observable-object.js'
@@ -64,7 +63,7 @@ export class Observable {
         if (!deleted) return false
 
         ModuleLogger.verbose('Observable', 'getProxyHandler', 'deleteProperty', `The property has been deleted.`, [target, p])
-        WatcherManager.onWrite(WriteType.PROXY_HANDLER_DELETE_PROPERTY, target, p, undefined)
+        WatcherManager.onWrite('proxy-handler-delete-property', target, p, undefined)
 
         return true
       },
@@ -78,7 +77,7 @@ export class Observable {
         property = Reflect.get(target, p, receiver)
         ModuleLogger.verbose('Observable', 'getProxyHandler', 'get', `The property has been read.`, [target, p, property])
 
-        WatcherManager.onRead(WatcherObservableType.PROXY_HANDLER_GET, target, p, property, receiver)
+        WatcherManager.onRead('proxy-handler-get', target, p, property, receiver)
 
         return property
       },
@@ -104,7 +103,7 @@ export class Observable {
         }
 
         ModuleLogger.verbose('ProxyObservable', 'getHandler', 'set', `The value has been set.`, [target, p, value])
-        WatcherManager.onWrite(WriteType.PROXY_HANDLER_SET, target, p, value)
+        WatcherManager.onWrite('proxy-handler-set', target, p, value)
 
         return true
       }

@@ -1,5 +1,5 @@
 import { tc } from '@aracna/core'
-import { WatcherObservableType, WatcherType, WriteType } from '../definitions/enums.js'
+import type { WatcherObservableType, WatcherType, WatcherWriteType } from '../definitions/types.js'
 import { ModuleLogger } from '../loggers/module-logger.js'
 import { WatcherObservable } from './watcher-observable.js'
 import { Watcher } from './watcher.js'
@@ -14,17 +14,17 @@ export class WatcherManager {
 
   static onRead(type: WatcherObservableType, target: object, key: PropertyKey, value: any, receiver: any = target): void {
     WatcherManager.watchers
-      .filter((v: Watcher) => v.type === WatcherType.READ)
+      .filter((v: Watcher) => v.type === 'read')
       .forEach((v: Watcher) => {
         v.read.effect(new WatcherObservable(key, receiver, target, type, value))
         ModuleLogger.verbose('Administration', 'onRead', `The read effect has been executed.`, v)
       })
   }
 
-  static onWrite(type: WriteType, target: object, key: PropertyKey, value: any): void {
+  static onWrite(type: WatcherWriteType, target: object, key: PropertyKey, value: any): void {
     WatcherManager.watchers.forEach((v: Watcher) => {
       switch (v.type) {
-        case WatcherType.REACTION: {
+        case 'reaction': {
           let rv: any
 
           rv = v.reaction.expression()
@@ -33,7 +33,7 @@ export class WatcherManager {
           v.reaction.value = rv
           break
         }
-        case WatcherType.WHEN: {
+        case 'when': {
           let wv: boolean
 
           wv = v.when.predicate()
@@ -45,9 +45,9 @@ export class WatcherManager {
       }
 
       switch (v.type) {
-        case WatcherType.AUTORUN:
-        case WatcherType.REACTION:
-        case WatcherType.WHEN:
+        case 'autorun':
+        case 'reaction':
+        case 'when':
           if (WatcherObservable.match(v.observables, type, target)) {
             return
           }
@@ -56,12 +56,12 @@ export class WatcherManager {
       }
 
       switch (v.type) {
-        case WatcherType.AUTORUN:
-        case WatcherType.REACTION:
-        case WatcherType.WHEN: {
+        case 'autorun':
+        case 'reaction':
+        case 'when': {
           let read: Watcher
 
-          read = new Watcher(WatcherType.READ, (observable: WatcherObservable) => {
+          read = new Watcher('read', (observable: WatcherObservable) => {
             v.observables.push(observable)
           })
 
@@ -77,10 +77,10 @@ export class WatcherManager {
       }
 
       switch (v.type) {
-        case WatcherType.REACTION:
+        case 'reaction':
           v.reaction.effect(v.reaction.value)
           break
-        case WatcherType.WHEN:
+        case 'when':
           v.when.value && v.when.effect()
           break
       }
@@ -89,13 +89,13 @@ export class WatcherManager {
 
   static find(type: WatcherType, effect?: Function, expression?: Function, predicate?: Function): Watcher | undefined {
     switch (type) {
-      case WatcherType.AUTORUN:
+      case 'autorun':
         return WatcherManager.watchers.find((v: Watcher) => v.autorun.effect === effect && v.type === type)
-      case WatcherType.REACTION:
+      case 'reaction':
         return WatcherManager.watchers.find((v: Watcher) => v.reaction.effect === effect && v.reaction.expression === expression && v.type === type)
-      case WatcherType.READ:
+      case 'read':
         return WatcherManager.watchers.find((v: Watcher) => v.read.effect === effect && v.type === type)
-      case WatcherType.WHEN:
+      case 'when':
         return WatcherManager.watchers.find((v: Watcher) => v.when.effect === effect && v.when.predicate === predicate && v.type === type)
     }
   }

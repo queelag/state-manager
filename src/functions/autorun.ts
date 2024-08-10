@@ -1,5 +1,4 @@
-import { WatcherType } from '../definitions/enums.js'
-import { WatcherAutorunEffect, WatcherDisposer } from '../definitions/types.js'
+import type { WatcherAutorunEffect, WatcherDisposer } from '../definitions/types.js'
 import { watch } from './watch.js'
 
 /**
@@ -8,5 +7,5 @@ import { watch } from './watch.js'
  * [Aracna Reference](https://aracna.dariosechi.it/state-manager/functions/autorun)
  */
 export function autorun(effect: WatcherAutorunEffect): WatcherDisposer {
-  return watch(WatcherType.AUTORUN, effect)
+  return watch('autorun', effect)
 }

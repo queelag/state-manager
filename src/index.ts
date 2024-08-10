@@ -1,5 +1,6 @@
-export * from './definitions/enums.js'
-export * from './definitions/types.js'
+export { LoggerName as StateManagerLoggerName } from './definitions/enums.js'
+export type * from './definitions/interfaces.js'
+export type * from './definitions/types.js'
 export * from './functions/autorun.js'
 export * from './functions/is-observable.js'
 export * from './functions/observe.js'

@@ -1,4 +1,4 @@
-import { KeyOf } from '@aracna/core'
+import type { KeyOf } from '@aracna/core'
 import { Observable } from '../classes/observable.js'
 
 /**

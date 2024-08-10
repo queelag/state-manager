@@ -1,6 +1,5 @@
 import { DeferredPromise } from '@aracna/core'
-import { WatcherType } from '../definitions/enums.js'
-import { WatcherDisposer, WatcherWhenEffect, WatcherWhenPredicate } from '../definitions/types.js'
+import type { WatcherDisposer, WatcherWhenEffect, WatcherWhenPredicate } from '../definitions/types.js'
 import { watch } from './watch.js'
 
 /**
@@ -28,11 +27,11 @@ export function when(predicate: WatcherWhenPredicate, ...args: any): any {
       }
 
       promise = new DeferredPromise()
-      disposer = watch(WatcherType.WHEN, predicate, effect)
+      disposer = watch('when', predicate, effect)
 
       return promise.instance
     }
     case 1:
-      return watch(WatcherType.WHEN, predicate, args[0])
+      return watch('when', predicate, args[0])
   }
 }

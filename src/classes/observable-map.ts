@@ -1,5 +1,4 @@
 import { IS_PROXY_KEY } from '../definitions/constants.js'
-import { WatcherObservableType, WriteType } from '../definitions/enums.js'
 import { Administration } from './administration.js'
 import { WatcherManager } from './watcher-manager.js'
 
@@ -29,7 +28,7 @@ export class ObservableMap {
 
     map.clear = () => {
       _clear()
-      WatcherManager.onWrite(WriteType.MAP_CLEAR, map, 'clear', map)
+      WatcherManager.onWrite('map-clear', map, 'clear', map)
     }
     map.delete = (key: K) => {
       let deleted: boolean
@@ -37,36 +36,36 @@ export class ObservableMap {
       deleted = _delete(key)
       if (!deleted) return false
 
-      WatcherManager.onWrite(WriteType.MAP_DELETE, map, key as any, undefined)
+      WatcherManager.onWrite('map-delete', map, key as any, undefined)
 
       return true
     }
     map.entries = () => {
-      WatcherManager.onRead(WatcherObservableType.MAP_ENTRIES, map, 'entries', [..._entries()])
+      WatcherManager.onRead('map-entries', map, 'entries', [..._entries()])
       return _entries()
     }
     map.get = (key: K) => {
       let value: V | undefined
 
       value = _get(key)
-      WatcherManager.onRead(WatcherObservableType.MAP_GET, map, key as any, value)
+      WatcherManager.onRead('map-get', map, key as any, value)
 
       return value
     }
     map.keys = () => {
-      WatcherManager.onRead(WatcherObservableType.MAP_KEYS, map, 'keys', [..._keys()])
+      WatcherManager.onRead('map-keys', map, 'keys', [..._keys()])
       return _keys()
     }
     map.set = (key: K, value: V) => {
       let map: Map<K, V>
 
       map = _set(key, value)
-      WatcherManager.onWrite(WriteType.MAP_SET, map, key as any, value)
+      WatcherManager.onWrite('map-set', map, key as any, value)
 
       return map
     }
     map.values = () => {
-      WatcherManager.onRead(WatcherObservableType.MAP_VALUES, map, 'values', [..._values()])
+      WatcherManager.onRead('map-values', map, 'values', [..._values()])
       return _values()
     }
 

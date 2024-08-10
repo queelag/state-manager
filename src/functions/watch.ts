@@ -2,34 +2,34 @@ import { tc } from '@aracna/core'
 import { WatcherManager } from '../classes/watcher-manager.js'
 import { WatcherObservable } from '../classes/watcher-observable.js'
 import { Watcher } from '../classes/watcher.js'
-import { WatcherType } from '../definitions/enums.js'
-import {
+import type {
   WatcherAutorunEffect,
   WatcherDisposer,
   WatcherReactionEffect,
   WatcherReactionExpression,
   WatcherReadEffect,
+  WatcherType,
   WatcherWhenEffect,
   WatcherWhenPredicate
 } from '../definitions/types.js'
 import { ModuleLogger } from '../loggers/module-logger.js'
 
-export function watch(type: WatcherType.AUTORUN, effect: WatcherAutorunEffect): WatcherDisposer
-export function watch<U>(type: WatcherType.REACTION, expression: WatcherReactionExpression<U>, effect: WatcherReactionEffect<U>): WatcherDisposer
-export function watch<T extends object>(type: WatcherType.READ, effect: WatcherReadEffect<T>): WatcherDisposer
-export function watch(type: WatcherType.WHEN, predicate: WatcherWhenPredicate, effect: WatcherWhenEffect): WatcherDisposer
+export function watch(type: 'autorun', effect: WatcherAutorunEffect): WatcherDisposer
+export function watch<U>(type: 'reaction', expression: WatcherReactionExpression<U>, effect: WatcherReactionEffect<U>): WatcherDisposer
+export function watch<T extends object>(type: 'read', effect: WatcherReadEffect<T>): WatcherDisposer
+export function watch(type: 'when', predicate: WatcherWhenPredicate, effect: WatcherWhenEffect): WatcherDisposer
 export function watch<T extends object, U>(type: WatcherType, ...args: any): WatcherDisposer {
   let watcher: Watcher<T, U> | undefined
 
   switch (type) {
-    case WatcherType.AUTORUN:
-    case WatcherType.READ:
+    case 'autorun':
+    case 'read':
       watcher = WatcherManager.find(type, args[0])
       break
-    case WatcherType.REACTION:
+    case 'reaction':
       watcher = WatcherManager.find(type, args[1], args[0])
       break
-    case WatcherType.WHEN:
+    case 'when':
       watcher = WatcherManager.find(type, args[1], undefined, args[0])
       break
   }
@@ -40,23 +40,23 @@ export function watch<T extends object, U>(type: WatcherType, ...args: any): Wat
   }
 
   switch (type) {
-    case WatcherType.AUTORUN:
-    case WatcherType.READ:
+    case 'autorun':
+    case 'read':
       watcher = new Watcher(type as any, args[0])
       break
-    case WatcherType.REACTION:
-    case WatcherType.WHEN:
+    case 'reaction':
+    case 'when':
       watcher = new Watcher(type as any, args[1], args[0])
       break
   }
 
   switch (type) {
-    case WatcherType.AUTORUN:
-    case WatcherType.REACTION:
-    case WatcherType.WHEN: {
+    case 'autorun':
+    case 'reaction':
+    case 'when': {
       let rd: WatcherDisposer
 
-      rd = watch(WatcherType.READ, (observable: WatcherObservable<T>) => {
+      rd = watch('read', (observable: WatcherObservable<T>) => {
         watcher?.observables.push(observable)
       })
 

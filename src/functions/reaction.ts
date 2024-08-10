@@ -1,5 +1,4 @@
-import { WatcherType } from '../definitions/enums.js'
-import { WatcherDisposer, WatcherReactionEffect, WatcherReactionExpression } from '../definitions/types.js'
+import type { WatcherDisposer, WatcherReactionEffect, WatcherReactionExpression } from '../definitions/types.js'
 import { watch } from './watch.js'
 
 /**
@@ -8,5 +7,5 @@ import { watch } from './watch.js'
  * [Aracna Reference](https://aracna.dariosechi.it/state-manager/functions/reaction)
  */
 export function reaction<T>(expression: WatcherReactionExpression<T>, effect: WatcherReactionEffect<T>): WatcherDisposer {
-  return watch(WatcherType.REACTION, expression, effect)
+  return watch('reaction', expression, effect)
 }

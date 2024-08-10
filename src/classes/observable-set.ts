@@ -1,5 +1,4 @@
 import { IS_PROXY_KEY } from '../definitions/constants.js'
-import { WatcherObservableType, WriteType } from '../definitions/enums.js'
 import { Administration } from './administration.js'
 import { WatcherManager } from './watcher-manager.js'
 
@@ -29,13 +28,13 @@ export class ObservableSet {
       let set: Set<V>
 
       set = _add(value)
-      WatcherManager.onWrite(WriteType.SET_ADD, set, 'add', value)
+      WatcherManager.onWrite('set-add', set, 'add', value)
 
       return set
     }
     set.clear = () => {
       _clear()
-      WatcherManager.onWrite(WriteType.SET_CLEAR, set, 'clear', set)
+      WatcherManager.onWrite('set-clear', set, 'clear', set)
     }
     set.delete = (value: V) => {
       let deleted: boolean
@@ -43,20 +42,20 @@ export class ObservableSet {
       deleted = _delete(value)
       if (!deleted) return false
 
-      WatcherManager.onWrite(WriteType.SET_DELETE, set, value as any, undefined)
+      WatcherManager.onWrite('set-delete', set, value as any, undefined)
 
       return true
     }
     set.entries = () => {
-      WatcherManager.onRead(WatcherObservableType.SET_ENTRIES, set, 'entries', [..._entries()])
+      WatcherManager.onRead('set-entries', set, 'entries', [..._entries()])
       return _entries()
     }
     set.keys = () => {
-      WatcherManager.onRead(WatcherObservableType.SET_KEYS, set, 'keys', [..._keys()])
+      WatcherManager.onRead('set-keys', set, 'keys', [..._keys()])
       return _keys()
     }
     set.values = () => {
-      WatcherManager.onRead(WatcherObservableType.SET_VALUES, set, 'values', [..._values()])
+      WatcherManager.onRead('set-values', set, 'values', [..._values()])
       return _values()
     }
 
