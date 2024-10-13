@@ -39,7 +39,7 @@
   "repository": "https://github.com/aracna/state-manager",
   "scripts": {
     "build": "rm -rf dist && node esbuild.mjs && pnpm tsc && pnpm api-extractor run --local",
-    "prepublish": "pnpm test && pnpm build && pnpm version patch && cp LICENSE package.json README.md dist",
+    "prepublish": "pnpm test && pnpm build && cp LICENSE package.json README.md dist",
     "test": "vitest run"
   },
   "sideEffects": false,
