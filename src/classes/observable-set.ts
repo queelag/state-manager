@@ -5,9 +5,9 @@ import { WatcherManager } from './watcher-manager.js'
 type SetAdd<T> = (value: T) => Set<T>
 type SetClear = () => void
 type SetDelete<T> = (value: T) => boolean
-type SetEntries<T> = () => IterableIterator<[T, T]>
-type SetKeys<T> = () => IterableIterator<T>
-type SetValues<T> = () => IterableIterator<T>
+type SetEntries<T> = () => SetIterator<[T, T]>
+type SetKeys<T> = () => SetIterator<T>
+type SetValues<T> = () => SetIterator<T>
 
 export class ObservableSet {
   static make<T extends object, U extends object, V>(root: T, target: U, key: PropertyKey, set: Set<V>, receiver: any): boolean {

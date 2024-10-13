@@ -4,11 +4,11 @@ import { WatcherManager } from './watcher-manager.js'
 
 type MapClear = () => void
 type MapDelete<K> = (key: K) => boolean
-type MapEntries<K, V> = () => IterableIterator<[K, V]>
+type MapEntries<K, V> = () => MapIterator<[K, V]>
 type MapGet<K, V> = (key: K) => V | undefined
-type MapKeys<K> = () => IterableIterator<K>
+type MapKeys<K> = () => MapIterator<K>
 type MapSet<K, V> = (key: K, value: V) => Map<K, V>
-type MapValues<V> = () => IterableIterator<V>
+type MapValues<V> = () => MapIterator<V>
 
 export class ObservableMap {
   static make<T extends object, U extends object, K, V>(root: T, target: U, p: PropertyKey, map: Map<K, V>, receiver: any): boolean {
